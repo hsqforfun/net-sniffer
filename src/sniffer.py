@@ -1,3 +1,13 @@
+class FLAGS(object):
+  # linux/if_ether.h
+  ETH_P_ALL     = 0x0003 # 所有协议
+  ETH_P_IP      = 0x0800 # 只处理IP层
+  # linux/if.h，混杂模式
+  IFF_PROMISC   = 0x100
+  # linux/sockios.h
+  SIOCGIFFLAGS  = 0x8913 # 获取标记值
+  SIOCSIFFLAGS  = 0x8914 # 设置标记值
+
 def capture_packet():
     # 设置过滤条件
     filters = fitler_entry.get()
