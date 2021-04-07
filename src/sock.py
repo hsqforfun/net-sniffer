@@ -2,6 +2,7 @@
 import socket
 import os
 import sys
+from ip_class import *
 
 
 def get_smth():
@@ -48,8 +49,17 @@ def sniffing(host, winORlinux, socket_proto):
 
         # read in a single packet
         print("Listening ...")
-        print(sniffer.recvfrom(65565))
-        print("Done.")
+        data, address = sniffer.recvfrom(65565)
+        # data_str = data.decode()
+        # print(str(data))
+        ip_header = IP(data[:20])
+        print(
+            "Protocol: %s %s -> %s"
+            % (ip_header.protocol, ip_header.src_address, ip_header.dst_address)
+        )
+
+        for item in address:
+            print("address: " + str(item))
 
 
 def main(host):
