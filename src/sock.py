@@ -2,7 +2,7 @@
 import socket
 import os
 import sys
-from ip_class import *
+from ip_class import IP
 
 
 def get_smth():
