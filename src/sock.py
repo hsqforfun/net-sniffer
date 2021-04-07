@@ -68,14 +68,14 @@ def sniffing(host, winORlinux, socket_proto):
         print("")
 
 
-def main(host):
-    if os.name == "nt":  # windows
-        sniffing(host, 1, socket.IPPROTO_IP)  # 0
-    else:
-        print("Linux : " + host)
-        # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
-        # sniffing(host, 0, socket.IPPROTO_TCP)  # 6
-        sniffing(host, 0, socket.IPPROTO_UDP)  # 17
+# def main(host):
+#     if os.name == "nt":  # windows
+#         sniffing(host, 1, socket.IPPROTO_IP)  # 0
+#     else:
+#         print("Linux : " + host)
+#         # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
+#         sniffing(host, 0, socket.IPPROTO_TCP)  # 6
+#         # sniffing(host, 0, socket.IPPROTO_UDP)  # 17
 
 
 if __name__ == "__main__":
@@ -95,4 +95,10 @@ if __name__ == "__main__":
 
     ipAddr = get_smth()
 
-    main(ipAddr)
+    if os.name == "nt":  # windows
+        sniffing(host, 1, socket.IPPROTO_IP)  # 0
+    else:  # Linux
+        print("Linux : " + host)
+        # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
+        sniffing(host, 0, socket.IPPROTO_TCP)  # 6
+        # sniffing(host, 0, socket.IPPROTO_UDP)  # 17

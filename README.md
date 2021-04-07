@@ -24,6 +24,8 @@ ICMP TCP/UDP TLS HTTP
 
 ### 协议
 
+#### 类型
+
 ![](./pic/python-net-proto.png)
 
 HTTPS: 443
@@ -31,6 +33,10 @@ HTTPS: 443
 ![](./pic/tls.png)
 
 ![](./pic/tls2.png)
+
+#### **TLS**
+
+**TCP 三次握手 + SSL/TLS 握手：**
 
 ![](./pic/tls-shake.png)
 

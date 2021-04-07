@@ -16,8 +16,9 @@ class TCP(Structure):  # 20 bytes
         ("ack", c_uint),
         ("lenres", c_ubyte),
         ("flags", c_ubyte),
+        ("win_size", c_ushort),
         ("checksum", c_ubyte),
-        ("urgpoint", c_ubyte),
+        ("urg_point", c_ubyte),
     ]
 
     def __new__(self, socket_buffer=None):
