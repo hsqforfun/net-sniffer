@@ -3,19 +3,19 @@ import struct
 from ctypes import *
 
 
-class IP(Structure):
+class IP(Structure):  # 20 bytes
     _fields_ = [
-        ("ihl", c_ubyte, 4),
+        ("ihl", c_ubyte, 4),  # 4bit
         ("version", c_ubyte, 4),
         ("tos", c_ubyte),
         ("len", c_ushort),
         ("id", c_ushort),
         ("offset", c_ushort),
-        ("ttl", c_ubyte),
+        ("ttl", c_ubyte),  # 8bit
         ("protocol_num", c_ubyte),
-        ("sum", c_ushort),
-        ("src", c_uint),
-        ("dst", c_uint),
+        ("sum", c_ushort),  # 16bit
+        ("src", c_uint),  # 32bit
+        ("dst", c_uint),  # 32bit
     ]
 
     def __new__(self, socket_buffer=None):

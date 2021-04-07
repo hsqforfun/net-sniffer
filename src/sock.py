@@ -3,6 +3,7 @@ import socket
 import os
 import sys
 from ip_class import IP
+from tcp_class import TCP
 
 
 def get_smth():
@@ -49,17 +50,22 @@ def sniffing(host, winORlinux, socket_proto):
 
         # read in a single packet
         print("Listening ...")
+
         data, address = sniffer.recvfrom(65565)
-        # data_str = data.decode()
-        # print(str(data))
         ip_header = IP(data[:20])
         print(
             "Protocol: %s %s -> %s"
             % (ip_header.protocol, ip_header.src_address, ip_header.dst_address)
         )
+        print("ttl: %s" % (ip_header.ttl))
+
+        tcp_header = TCP(data[21:40])
+        print("%s -> %s" % (tcp_header.srcPort, tcp_header.dstPort))
+        print(".")
 
         for item in address:
             print("address: " + str(item))
+        print("")
 
 
 def main(host):
@@ -67,7 +73,9 @@ def main(host):
         sniffing(host, 1, socket.IPPROTO_IP)  # 0
     else:
         print("Linux : " + host)
-        sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
+        # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
+        # sniffing(host, 0, socket.IPPROTO_TCP)  # 6
+        sniffing(host, 0, socket.IPPROTO_UDP)  # 17
 
 
 if __name__ == "__main__":

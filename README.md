@@ -10,7 +10,7 @@
 
 #### 协议
 
-HTTP TCP/UDP TLS ICMP
+ICMP TCP/UDP TLS HTTP
 
 ![](./pic/ex1-01.png)
 
@@ -26,7 +26,25 @@ HTTP TCP/UDP TLS ICMP
 
 ![](./pic/python-net-proto.png)
 
-HTTPS:443
+HTTPS: 443
+
+![](./pic/tls.png)
+
+![](./pic/tls2.png)
+
+![](./pic/tls-shake.png)
+
+#### IP报头
+
+![](./pic/ip-head.png)
+
+#### TCP报头
+
+![](./pic/tcp-head.png)
+
+注意：TCP中的报文信息是端口16位，IP信息在IP报头中32位的源、目的。
+
+
 
 
 
@@ -79,6 +97,12 @@ routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["netma
 ### ctypes
 
 构建ip数据报头的解析
+
+
+
+### struct
+
+![](./pic/struct.png)
 
 
 
