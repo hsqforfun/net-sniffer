@@ -22,7 +22,6 @@ def get_smth():
                 routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][
                     0
                 ]["netmask"]
-                return routingIPNetmask
             except KeyError:
                 pass
 
@@ -32,28 +31,32 @@ def get_smth():
     print(display_format % ("Routing NIC MAC Address:", routingNicMacAddr))
     print(display_format % ("Routing IP Address:", routingIPAddr))
     print(display_format % ("Routing IP Netmask:", routingIPNetmask))
+    return routingIPAddr
 
 
-def sniffing(host, win, socket_prot):
+def sniffing(host, winORlinux, socket_proto):
     while 1:
-        sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket_prot)
-        sniffer.bind((host, 0))
+        sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket_proto)
+        port = 0
+        sniffer.bind((host, port))
 
         # include the IP headers in the captured packets
         sniffer.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
 
-        if win == 1:
-            sniffer.ioctl(socket.SIO_RCVALL, socket_RCVALL_ON)
+        if winORlinux == 1:
+            sniffer.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
 
         # read in a single packet
+        print("Listening ...")
         print(sniffer.recvfrom(65565))
+        print("Done.")
 
 
 def main(host):
-    if os.name == "nt":
+    if os.name == "nt":  # windows
         sniffing(host, 1, socket.IPPROTO_IP)  # 0
     else:
-        print(host)
+        print("Linux : " + host)
         sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
 
 
@@ -72,7 +75,6 @@ if __name__ == "__main__":
     hostname = socket.gethostname()
     HOST = socket.gethostbyname(hostname)
 
-    ipMe = get_smth()
-    print(HOST)
-    print(ipMe)
-    main(ipMe)
+    ipAddr = get_smth()
+
+    main(ipAddr)
