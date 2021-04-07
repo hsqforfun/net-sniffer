@@ -1,14 +1,14 @@
-# it is net-sniffer
+# EX1：网络嗅探器
 
 
 
-### 要求
+## 要求
 
 ![要求](./pic/要求.png)
 
 
 
-#### 协议
+## 协议
 
 ICMP TCP/UDP TLS HTTP
 
@@ -22,9 +22,9 @@ ICMP TCP/UDP TLS HTTP
 
 
 
-### 协议
 
-#### 类型
+
+### 类型
 
 ![](./pic/python-net-proto.png)
 
@@ -34,17 +34,17 @@ HTTPS: 443
 
 ![](./pic/tls2.png)
 
-#### **TLS**
+### **TLS**
 
 **TCP 三次握手 + SSL/TLS 握手：**
 
 ![](./pic/tls-shake.png)
 
-#### IP报头
+### IP报头
 
 ![](./pic/ip-head.png)
 
-#### TCP报头
+### TCP报头
 
 ![](./pic/tcp-head.png)
 
@@ -54,7 +54,7 @@ HTTPS: 443
 
 
 
-
+## 学习
 
 ### socket
 
@@ -112,7 +112,11 @@ routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["netma
 
 
 
-### TIPS
+### 图形化tkinter
+
+
+
+## TIPS
 
 #### Linux下网卡混杂模式设置方法
 

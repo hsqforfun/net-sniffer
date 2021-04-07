@@ -4,6 +4,7 @@ import os
 import sys
 from ip_class import IP
 from tcp_class import TCP
+import netifaces
 
 
 def get_smth():
@@ -53,18 +54,22 @@ def sniffing(host, winORlinux, socket_proto):
 
         data, address = sniffer.recvfrom(65565)
         ip_header = IP(data[:20])
+        print("IP head:")
         print(
             "Protocol: %s %s -> %s"
             % (ip_header.protocol, ip_header.src_address, ip_header.dst_address)
         )
         print("ttl: %s" % (ip_header.ttl))
 
-        tcp_header = TCP(data[21:40])
-        print("%s -> %s" % (tcp_header.srcPort, tcp_header.dstPort))
+        print("TCP head:")
+        tcp_header = TCP(data[20:40])
+        print("Port: %s -> %s" % (tcp_header.srcPort, tcp_header.dstPort))
+        print("Seq: %s Ack: %s" % (tcp_header.seq, tcp_header.ack))
         print(".")
 
         for item in address:
-            print("address: " + str(item))
+            if item != 0:
+                print("address: " + str(item))
         print("")
 
 
@@ -76,6 +81,32 @@ def sniffing(host, winORlinux, socket_proto):
 #         # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
 #         sniffing(host, 0, socket.IPPROTO_TCP)  # 6
 #         # sniffing(host, 0, socket.IPPROTO_UDP)  # 17
+
+
+def call_from_others():
+    # try:
+    #     import netifaces
+    # except ImportError:
+    #     try:
+    #         command_to_execute = "pip install netifaces || easy_install netifaces"
+    #         os.system(command_to_execute)
+    #     except OSError:
+    #         print("Can NOT install netifaces, Aborted!")
+    #         sys.exit(1)
+    #     import netifaces
+    # host to listen
+    hostname = socket.gethostname()
+    HOST = socket.gethostbyname(hostname)
+
+    ipAddr = get_smth()
+
+    if os.name == "nt":  # windows
+        sniffing(ipAddr, 1, socket.IPPROTO_IP)  # 0
+    else:  # Linux
+        print("Linux : " + HOST)
+        # sniffing(ipAddr, 0, socket.IPPROTO_ICMP)  # 1
+        sniffing(ipAddr, 0, socket.IPPROTO_TCP)  # 6
+        # sniffing(ipAddr, 0, socket.IPPROTO_UDP)  # 17
 
 
 if __name__ == "__main__":
@@ -96,9 +127,9 @@ if __name__ == "__main__":
     ipAddr = get_smth()
 
     if os.name == "nt":  # windows
-        sniffing(host, 1, socket.IPPROTO_IP)  # 0
+        sniffing(ipAddr, 1, socket.IPPROTO_IP)  # 0
     else:  # Linux
-        print("Linux : " + host)
-        # sniffing(host, 0, socket.IPPROTO_ICMP)  # 1
-        sniffing(host, 0, socket.IPPROTO_TCP)  # 6
-        # sniffing(host, 0, socket.IPPROTO_UDP)  # 17
+        print("Linux : " + HOST)
+        # sniffing(ipAddr, 0, socket.IPPROTO_ICMP)  # 1
+        sniffing(ipAddr, 0, socket.IPPROTO_TCP)  # 6
+        # sniffing(ipAddr, 0, socket.IPPROTO_UDP)  # 17

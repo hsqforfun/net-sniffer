@@ -25,10 +25,8 @@ class TCP(Structure):  # 20 bytes
         return self.from_buffer_copy(socket_buffer)
 
     def __init__(self, socket_buffer=None):
-        self.srcPort = socket.inet_ntoa(struct.pack("<h", self.src_port))
-        self.dstPort = socket.inet_ntoa(struct.pack("<h", self.dst_port))
-        # self.srcPort = self.src_port
-        # self.dstPort = self.dst_port
+        self.srcPort = self.src_port
+        self.dstPort = self.dst_port
         # try:
         #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
         #     self.protocol = self.protocol_map[self.protocol_num]
