@@ -1,0 +1,1 @@
+from Ui_qtLearn import Ui_MainWindow
