@@ -8,7 +8,7 @@
 
 
 
-## 协议
+### 协议
 
 ICMP TCP/UDP TLS HTTP
 
@@ -56,6 +56,16 @@ HTTPS: 443
 
 ## 学习
 
+### 层级
+
+![OSI分层模型](./pic/tcp-level.png)
+
+![](./pic/fram.png)
+
+![](./pic/level.png)
+
+
+
 ### socket
 
 ```python
@@ -86,7 +96,14 @@ print("Done.")
 
 
 
+#### 说明：
 
+AF = Address Family
+PF = Protocol Family
+
+
+
+socket.ntohl == network to host long/short
 
 ### netifaces
 

@@ -92,7 +92,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.ListButton_clear.clicked.connect(self.ListText.clear)
-        self.ListButton.clicked.connect(MainWindow.tcp)
+        self.ListButton.clicked.connect(MainWindow.snip)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

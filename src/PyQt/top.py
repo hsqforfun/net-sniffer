@@ -30,7 +30,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #     self.ListText.setTextCursor(cursor)
     #     self.ListText.ensureCursorVisible()
 
-    def tcp(self):
+    def snip(self):
         # while 1:
         self.snif.call_from_others()
         # self.ListText.append(self.snif.returnString)

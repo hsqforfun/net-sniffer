@@ -1,9 +1,10 @@
 import socket
 import os
 import sys
+import netifaces
+
 from ip_class import IP
 from tcp_class import TCP
-import netifaces
 
 
 class Sniffers:
@@ -49,10 +50,10 @@ class Sniffers:
         # self.addString(display_format % ("Routing IP Netmask:", routingIPNetmask))
         return routingIPAddr
 
-    def sniffing(self, host, winORlinux, socket_proto):
+    def sniffing(self, hostIP, winORlinux, socket_proto):
         sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket_proto)
         port = 0
-        sniffer.bind((host, port))
+        sniffer.bind((hostIP, port))
 
         # include the IP headers in the captured packets
         sniffer.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -114,7 +115,7 @@ if __name__ == "__main__":
             print("Can NOT install netifaces, Aborted!")
             sys.exit(1)
         import netifaces
-    # host to listen
+    # hostIP to listen
     hostname = socket.gethostname()
     HOST = socket.gethostbyname(hostname)
 
