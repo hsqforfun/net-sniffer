@@ -27,16 +27,21 @@ class Frame(Structure):  # 14 bytes
             0x9999: "Not support",
         }
         self.protocol_hex = socket.ntohs(self.protocol_num)
-        print(hex(self.protocol_hex))
+
+        self.src = ""
+        self.dst = ""
+        self.info = ""
+
+        for i in reversed(self.src_mac):
+            self.src += "%s." % str(i)
+        self.src = self.src[:-1]
 
         for i in reversed(self.dst_mac):
-            print(i, end=".")
-        print()
+            self.dst += "%s." % str(i)
+        self.dst = self.dst[:-1]
 
         try:
             self.protocol = self.protocol_map[self.protocol_hex]
         except:
             self.protocol = self.protocol_map[0x9999]
-            print("warning  !!!")
-            print("protocol is: 0x%x" % self.protocol_hex)
-            time.sleep(1)
+            self.info = "Unknown protocol is: 0x%x" % self.protocol_hex

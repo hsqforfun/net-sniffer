@@ -2,131 +2,91 @@ import socket
 import os
 import sys
 import netifaces
+import time
+import struct
 
-from ip_class import IP
-from tcp_class import TCP
+sys.path.append("..")
+from protocol import *
+
+SelectListString = 1
+SelectDetailString = 2
+SelectBinaryString = 3
+
+SIOCGIFHWADDR = 0x8927  # Get hardware address
+SIOCGIFADDR = 0x8915  # get PA address
+SIOCGIFNETMASK = 0x891B  # get network PA mask
+SIOCGIFNAME = 0x8910  # get iface name
+SIOCSIFLINK = 0x8911  # set iface channel
+SIOCGIFCONF = 0x8912  # get iface list
+SIOCGIFFLAGS = 0x8913  # get flags
+SIOCSIFFLAGS = 0x8914  # set flags
+SIOCGIFINDEX = 0x8933  # name -> if_index mapping
+SIOCGIFCOUNT = 0x8938  # get number of devices
+SIOCGSTAMP = 0x8906  # get packet timestamp (as a timeval)
+IFF_PROMISC = 0x100
+SOL_PACKET = 263
+PACKET_ADD_MEMBERSHIP = 1
+PACKET_DROP_MEMBERSHIP = 2
+PACKET_RECV_OUTPUT = 3
+PACKET_RX_RING = 5
+PACKET_STATISTICS = 6
+PACKET_MR_MULTICAST = 0
+PACKET_MR_PROMISC = 1
+PACKET_MR_ALLMULTI = 2
+PACKET_MR_PROMISC = 1
+ETH_P_ALL = 3
+ETH_P_IP = 0x800
+
+hostName = netifaces.gateways()["default"][netifaces.AF_INET][1]
+mr_ifindex = socket.if_nametoindex(hostName)  # c_type is int
+mr_type = PACKET_MR_PROMISC  # c_type is unsigned short
+mr_alen = 0  # c_type is unsigned short
+mr_address = b"\0"  # c_type is unsigned char[8]
+packet_mreq = struct.pack("iHH8s", mr_ifindex, mr_type, mr_alen, mr_address)
 
 
-class Sniffers:
-    def __init__(self):
-        super(Sniffers, self).__init__()
-        hostname = socket.gethostname()
-        HOST = socket.gethostbyname(hostname)
-        self.ipAddr = self.get_something()
-        self.returnString = ""
-
-    def addString(self, str):
-        self.returnString += str + "\n"
-
-    def clearString(self):
-        self.returnString = ""
-
-    def get_something(self):
-        routingGateway = netifaces.gateways()["default"][netifaces.AF_INET][0]
-        routingNicName = netifaces.gateways()["default"][netifaces.AF_INET][1]
-
-        for interface in netifaces.interfaces():
-            if interface == routingNicName:
-                # self.addString netifaces.ifaddresses(interface)
-                routingNicMacAddr = netifaces.ifaddresses(interface)[netifaces.AF_LINK][
+def get_something():
+    routingGateway = netifaces.gateways()["default"][netifaces.AF_INET][0]
+    routingNicName = netifaces.gateways()["default"][netifaces.AF_INET][1]
+    for interface in netifaces.interfaces():
+        if interface == routingNicName:
+            routingNicMacAddr = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0][
+                "addr"
+            ]
+            try:
+                routingIPAddr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0][
+                    "addr"
+                ]
+                routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][
                     0
-                ]["addr"]
-                try:
-                    routingIPAddr = netifaces.ifaddresses(interface)[netifaces.AF_INET][
-                        0
-                    ]["addr"]
-                    # TODO(Guodong Ding) Note: On Windows, netmask maybe give a wrong result in 'netifaces' module.
-                    routingIPNetmask = netifaces.ifaddresses(interface)[
-                        netifaces.AF_INET
-                    ][0]["netmask"]
-                except KeyError:
-                    pass
+                ]["netmask"]
+            except KeyError:
+                pass
+    return routingIPAddr, routingNicName
 
-        # display_format = "%-30s %-20s"
-        # self.addString(display_format % ("Routing Gateway:", routingGateway))
-        # self.addString(display_format % ("Routing NIC Name:", routingNicName))
-        # self.addString(display_format % ("Routing NIC MAC Address:", routingNicMacAddr))
-        # self.addString(display_format % ("Routing IP Address:", routingIPAddr))
-        # self.addString(display_format % ("Routing IP Netmask:", routingIPNetmask))
-        return routingIPAddr
 
-    def sniffing(self, hostIP, winORlinux, socket_proto):
-        sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket_proto)
-        port = 0
-        sniffer.bind((hostIP, port))
+class MySniffer:
+    def __init__(self):
+        super(MySniffer, self).__init__()
+        self.ipAddr, self.hostName = get_something()
 
-        # include the IP headers in the captured packets
-        sniffer.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+        self.port = 0
+        self.data = bytes()
+        self.address = bytes()
 
-        if winORlinux == 1:
-            sniffer.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
-
-        # read in a single packet
-        self.addString("Listening ...")
-
-        try:
-            data, address = sniffer.recvfrom(65565)
-            # data, address = sniffer.recvfrom(65565, 0x40)  # 0x40 MSG_NONBLOCK
-        except BlockingIOError as e:
-            data = None
-            address = None
-            self.addString("Blocking!")
-            return
-
-        ip_header = IP(data[:20])
-        self.addString("IP head:")
-        self.addString(
-            "Protocol: %s %s -> %s"
-            % (ip_header.protocol, ip_header.src_address, ip_header.dst_address)
+        self.snifferSocket = socket.socket(
+            socket.AF_PACKET, socket.SOCK_RAW, socket.htons(ETH_P_ALL)
         )
-        self.addString("ttl: %s" % (ip_header.ttl))
+        self.snifferSocket.bind((self.hostName, self.port))
+        self.snifferSocket.setsockopt(SOL_PACKET, PACKET_ADD_MEMBERSHIP, packet_mreq)
 
-        self.addString("TCP head:")
-        tcp_header = TCP(data[20:40])
-        self.addString("Port: %s -> %s" % (tcp_header.srcPort, tcp_header.dstPort))
-        self.addString("Seq: %s Ack: %s" % (tcp_header.seq, tcp_header.ack))
-
-        for item in address:
-            if item != 0:
-                self.addString("address: " + str(item))
-
-    def call_from_others(self):
-        if os.name == "nt":  # windows
-            self.sniffing(self.ipAddr, 1, socket.IPPROTO_IP)
-            # sniffing(self.ipAddr, 1, socket.IPPROTO_IP)  # 0
-        else:  # Linux
-            self.addString("Linux : " + self.ipAddr)
-            # self.sniffing(self.ipAddr, 0, socket.IPPROTO_ICMP)  # 1
-            # self.sniffing(self.ipAddr, 0, socket.IPPROTO_TCP)  # 6
-            self.sniffing(self.ipAddr, 0, socket.IPPROTO_UDP)  # 17
-
-    def myPrint(self):
-        self.addString("Hello there.")
-
-
-if __name__ == "__main__":
-    try:
-        import netifaces
-    except ImportError:
+    def sniffing(self):
         try:
-            command_to_execute = "pip install netifaces || easy_install netifaces"
-            os.system(command_to_execute)
-        except OSError:
-            print("Can NOT install netifaces, Aborted!")
-            sys.exit(1)
-        import netifaces
-    # hostIP to listen
-    hostname = socket.gethostname()
-    HOST = socket.gethostbyname(hostname)
+            self.data, self.address = self.snifferSocket.recvfrom(65565)
+        except BlockingIOError as e:
+            print("Blocking! Not happened!")
+            time.sleep(1)
 
-    snf = Sniffers()
-
-    snf.ipAddr = snf.get_something()
-
-    if os.name == "nt":  # windows
-        snf.sniffing(ipAddr, 1, socket.IPPROTO_IP)  # 0
-    else:  # Linux
-        print("Linux : " + HOST)
-        # snf.sniffing(ipAddr, 0, socket.IPPROTO_ICMP)  # 1
-        # snf.sniffing(ipAddr, 0, socket.IPPROTO_TCP)  # 6
-        snf.sniffing(ipAddr, 0, socket.IPPROTO_UDP)  # 17
+    def myClear(self):
+        self.data = bytes()
+        self.address = bytes()

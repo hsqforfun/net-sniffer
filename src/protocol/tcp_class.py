@@ -27,6 +27,17 @@ class TCP(Structure):  # 20 bytes
     def __init__(self, socket_buffer=None):
         self.srcPort = self.src_port
         self.dstPort = self.dst_port
+        self.src = ""
+        self.dst = ""
+        self.protocol = ""
+        self.info = "Port: %s -> %s . Seq: %s Ack: %s" % (
+            self.srcPort,
+            self.dstPort,
+            self.seq,
+            self.ack,
+        )
+
+        # self
         # try:
         #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
         #     self.protocol = self.protocol_map[self.protocol_num]

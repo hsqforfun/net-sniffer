@@ -36,24 +36,41 @@ class ARP(Structure):  #  28 bytes
 
         self.src_ip_str = socket.inet_ntoa(struct.pack("<I", self.src_ip))
         self.dst_ip_str = socket.inet_ntoa(struct.pack("<I", self.dst_ip))
+        self.src = self.dst = ""
+
+        for i in reversed(self.src_mac):
+            self.src += "%s." % str(i)
+        self.src = self.src[:-1]
+
+        for i in reversed(self.dst_mac):
+            self.dst += "%s." % str(i)
+        self.dst = self.dst[:-1]
 
         self.op_num = socket.ntohs(self.op_num)
         self.protocol_num = socket.ntohs(self.protocol_num)
+
+        self.errorFlag = False
+        self.errorInfo = ""
+
         try:
             self.op = self.op_map[self.op_num]
+            self.errorFlag = False
+            self.errorInfo = ""
+            self.info = self.op
         except:
-            print("oh on")
-            print("hardware:%x" % (self.hardware_type))
-            print("protocol_num:%x" % (self.protocol_num))
-            print("mac_length:%x" % (self.mac_length))
-            print("ip_length:%x" % (self.ip_length))
-            print(bin(self.op_num))
+            self.errorFlag = True
+            self.errorInfo = str("bin(self.op_num)")
+            self.info = self.errorInfo
             time.sleep(5)
 
         try:
             self.protocol = self.protocol_map[self.protocol_num]
+            self.errorFlag = False
+            self.info = self.op
+            self.errorInfo = ""
         except:
             self.protocol = "NOT SUPPORT"
-            print("warning by hsq !!!")
-            print("protocol is: %x" % self.protocol_num)
+            self.errorFlag = True
+            self.errorInfo = "protocol :%s Not Support" % str(self.protocol_num)
+            self.info = self.errorInfo
             time.sleep(1)

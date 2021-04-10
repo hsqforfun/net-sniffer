@@ -21,54 +21,111 @@ class Ui_MainWindow(object):
         MainWindow.setFont(font)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(9, 9, 110, 17))
         self.label.setAutoFillBackground(False)
         self.label.setObjectName("label")
-        self.line = QtWidgets.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(9, 1002, 1295, 16))
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 30, 1311, 981))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.ListButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.verticalLayout.addWidget(self.label)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.ListButton = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
         font.setItalic(True)
         self.ListButton.setFont(font)
         self.ListButton.setObjectName("ListButton")
-        self.horizontalLayout_2.addWidget(self.ListButton)
-        self.ListButton_clear = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.horizontalLayout_4.addWidget(self.ListButton)
+        self.continueBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.continueBtn.setObjectName("continueBtn")
+        self.horizontalLayout_4.addWidget(self.continueBtn)
+        self.stopBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.stopBtn.setObjectName("stopBtn")
+        self.horizontalLayout_4.addWidget(self.stopBtn)
+        self.Btnclear = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
         font.setItalic(True)
-        self.ListButton_clear.setFont(font)
-        self.ListButton_clear.setObjectName("ListButton_clear")
-        self.horizontalLayout_2.addWidget(self.ListButton_clear)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.Btnclear.setFont(font)
+        self.Btnclear.setObjectName("Btnclear")
+        self.horizontalLayout_4.addWidget(self.Btnclear)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setObjectName("label_3")
-        self.verticalLayout_2.addWidget(self.label_3)
-        self.ListText = QtWidgets.QTextBrowser(self.verticalLayoutWidget)
-        self.ListText.setObjectName("ListText")
-        self.verticalLayout_2.addWidget(self.ListText)
-        self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.verticalLayout.addWidget(self.label_3)
+        self.verticalList = QtWidgets.QVBoxLayout()
+        self.verticalList.setObjectName("verticalList")
+        self.horizontalListBar = QtWidgets.QHBoxLayout()
+        self.horizontalListBar.setObjectName("horizontalListBar")
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_5.setObjectName("label_5")
+        self.horizontalListBar.addWidget(self.label_5)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        self.label_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_6.setObjectName("label_6")
+        self.horizontalListBar.addWidget(self.label_6)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_7.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_7.setObjectName("label_7")
+        self.horizontalListBar.addWidget(self.label_7)
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        self.label_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_9.setObjectName("label_9")
+        self.horizontalListBar.addWidget(self.label_9)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        self.label_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_8.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_8.setObjectName("label_8")
+        self.horizontalListBar.addWidget(self.label_8)
+        self.label_10 = QtWidgets.QLabel(self.centralwidget)
+        self.label_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.label_10.setScaledContents(False)
+        self.label_10.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_10.setObjectName("label_10")
+        self.horizontalListBar.addWidget(self.label_10)
+        self.verticalList.addLayout(self.horizontalListBar)
+        self.verticalLayout.addLayout(self.verticalList)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.ListNumber = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListNumber.setObjectName("ListNumber")
+        self.horizontalLayout_3.addWidget(self.ListNumber)
+        self.ListSrc = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListSrc.setObjectName("ListSrc")
+        self.horizontalLayout_3.addWidget(self.ListSrc)
+        self.ListDst = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListDst.setObjectName("ListDst")
+        self.horizontalLayout_3.addWidget(self.ListDst)
+        self.ListLength = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListLength.setObjectName("ListLength")
+        self.horizontalLayout_3.addWidget(self.ListLength)
+        self.ListProtocol = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListProtocol.setObjectName("ListProtocol")
+        self.horizontalLayout_3.addWidget(self.ListProtocol)
+        self.ListInfo = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ListInfo.setObjectName("ListInfo")
+        self.horizontalLayout_3.addWidget(self.ListInfo)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
-        self.verticalLayout_2.addWidget(self.label_2)
-        self.DetailText = QtWidgets.QTextBrowser(self.verticalLayoutWidget)
+        self.verticalLayout.addWidget(self.label_2)
+        self.DetailText = QtWidgets.QTextBrowser(self.centralwidget)
         self.DetailText.setObjectName("DetailText")
-        self.verticalLayout_2.addWidget(self.DetailText)
-        self.label_4 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.verticalLayout.addWidget(self.DetailText)
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setObjectName("label_4")
-        self.verticalLayout_2.addWidget(self.label_4)
-        self.Binarytext = QtWidgets.QTextBrowser(self.verticalLayoutWidget)
+        self.verticalLayout.addWidget(self.label_4)
+        self.Binarytext = QtWidgets.QTextBrowser(self.centralwidget)
         self.Binarytext.setObjectName("Binarytext")
-        self.verticalLayout_2.addWidget(self.Binarytext)
+        self.verticalLayout.addWidget(self.Binarytext)
+        self.line = QtWidgets.QFrame(self.centralwidget)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1313, 28))
@@ -91,8 +148,17 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuBinary.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.ListButton_clear.clicked.connect(self.ListText.clear)
+        self.Btnclear.clicked.connect(self.DetailText.clear)
+        self.Btnclear.clicked.connect(self.Binarytext.clear)
+        self.Btnclear.clicked.connect(self.ListNumber.clear)
+        self.Btnclear.clicked.connect(self.ListSrc.clear)
+        self.Btnclear.clicked.connect(self.ListDst.clear)
+        self.Btnclear.clicked.connect(self.ListLength.clear)
+        self.Btnclear.clicked.connect(self.ListProtocol.clear)
+        self.Btnclear.clicked.connect(self.ListInfo.clear)
         self.ListButton.clicked.connect(MainWindow.snip)
+        self.stopBtn.clicked.connect(MainWindow.stop)
+        self.continueBtn.clicked.connect(MainWindow.conti)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -100,16 +166,74 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Rukawa"))
         self.label.setText(_translate("MainWindow", "Rukawa Sniffer"))
         self.ListButton.setText(_translate("MainWindow", "Sniffer"))
-        self.ListButton_clear.setText(_translate("MainWindow", "Clear"))
+        self.continueBtn.setText(_translate("MainWindow", "continue"))
+        self.stopBtn.setText(_translate("MainWindow", "stop"))
+        self.Btnclear.setText(_translate("MainWindow", "Clear"))
         self.label_3.setText(_translate("MainWindow", "Packet List"))
-        self.ListText.setHtml(
+        self.label_5.setText(_translate("MainWindow", "number"))
+        self.label_6.setText(_translate("MainWindow", "src"))
+        self.label_7.setText(_translate("MainWindow", "dst"))
+        self.label_9.setText(_translate("MainWindow", "length"))
+        self.label_8.setText(_translate("MainWindow", "protocol"))
+        self.label_10.setText(_translate("MainWindow", "info"))
+        self.ListNumber.setHtml(
             _translate(
                 "MainWindow",
                 '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
                 '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
                 "p, li { white-space: pre-wrap; }\n"
                 "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:400;">hello</span></p></body></html>',
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">number</p></body></html>',
+            )
+        )
+        self.ListSrc.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">src</p></body></html>',
+            )
+        )
+        self.ListDst.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">dst</p></body></html>',
+            )
+        )
+        self.ListLength.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">length</p></body></html>',
+            )
+        )
+        self.ListProtocol.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">protocol</p></body></html>',
+            )
+        )
+        self.ListInfo.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">info</p></body></html>',
             )
         )
         self.label_2.setText(_translate("MainWindow", "Packet Detail"))
@@ -120,7 +244,7 @@ class Ui_MainWindow(object):
                 '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
                 "p, li { white-space: pre-wrap; }\n"
                 "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:400;">detail</span></p></body></html>',
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>',
             )
         )
         self.label_4.setText(_translate("MainWindow", "Packet Binary"))
@@ -131,9 +255,7 @@ class Ui_MainWindow(object):
                 '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
                 "p, li { white-space: pre-wrap; }\n"
                 "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:400;">binary</span></p>\n'
-                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:400;"><br /></p>\n'
-                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:400;"><br /></p></body></html>',
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>',
             )
         )
         self.menuSniffer.setTitle(_translate("MainWindow", "Sniffer"))

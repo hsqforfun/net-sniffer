@@ -15,8 +15,8 @@ class IP(Structure):  # 20 bytes
         ("ttl", c_ubyte),  # 8bit
         ("protocol_num", c_ubyte),
         ("sum", c_ushort),  # 16bit
-        ("src", c_uint),  # 32bit
-        ("dst", c_uint),  # 32bit
+        ("srcIP", c_uint),  # 32bit
+        ("dstIP", c_uint),  # 32bit
     ]
 
     def __new__(self, socket_buffer=None):
@@ -44,12 +44,20 @@ class IP(Structure):  # 20 bytes
             88: "IGRP",
             89: "OSPF",
         }
-        self.src_address = socket.inet_ntoa(struct.pack("<I", self.src))
-        self.dst_address = socket.inet_ntoa(struct.pack("<I", self.dst))
+        self.src = socket.inet_ntoa(struct.pack("<I", self.srcIP))
+        self.dst = socket.inet_ntoa(struct.pack("<I", self.dstIP))
+
+        self.info = "ttl: %s" % (self.ttl)
+        self.errorFlag = False
+        self.errorInfo = ""
+        self.protocol = ""
+
         try:
             self.protocol = self.protocol_map[self.protocol_num]
+            self.errorFlag = False
+            self.errorInfo = ""
         except:
             self.protocol = str(self.protocol_num)
-            print("warning by hsq !!!")
-            print("protocol is: " + self.protocol)
+            self.errorFlag = True
+            self.errorInfo = "warning by hsq !!! Protocol is: %s " % self.protocol
             time.sleep(1)
