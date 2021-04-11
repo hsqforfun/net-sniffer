@@ -53,62 +53,27 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_3)
         self.verticalList = QtWidgets.QVBoxLayout()
         self.verticalList.setObjectName("verticalList")
-        self.horizontalListBar = QtWidgets.QHBoxLayout()
-        self.horizontalListBar.setObjectName("horizontalListBar")
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_5.setObjectName("label_5")
-        self.horizontalListBar.addWidget(self.label_5)
-        self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.horizontalListBar.addWidget(self.label_6)
-        self.label_7 = QtWidgets.QLabel(self.centralwidget)
-        self.label_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_7.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_7.setObjectName("label_7")
-        self.horizontalListBar.addWidget(self.label_7)
-        self.label_9 = QtWidgets.QLabel(self.centralwidget)
-        self.label_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_9.setObjectName("label_9")
-        self.horizontalListBar.addWidget(self.label_9)
-        self.label_8 = QtWidgets.QLabel(self.centralwidget)
-        self.label_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_8.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_8.setObjectName("label_8")
-        self.horizontalListBar.addWidget(self.label_8)
-        self.label_10 = QtWidgets.QLabel(self.centralwidget)
-        self.label_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.label_10.setScaledContents(False)
-        self.label_10.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_10.setObjectName("label_10")
-        self.horizontalListBar.addWidget(self.label_10)
-        self.verticalList.addLayout(self.horizontalListBar)
         self.verticalLayout.addLayout(self.verticalList)
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.ListNumber = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListNumber.setObjectName("ListNumber")
-        self.horizontalLayout_3.addWidget(self.ListNumber)
-        self.ListSrc = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListSrc.setObjectName("ListSrc")
-        self.horizontalLayout_3.addWidget(self.ListSrc)
-        self.ListDst = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListDst.setObjectName("ListDst")
-        self.horizontalLayout_3.addWidget(self.ListDst)
-        self.ListLength = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListLength.setObjectName("ListLength")
-        self.horizontalLayout_3.addWidget(self.ListLength)
-        self.ListProtocol = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListProtocol.setObjectName("ListProtocol")
-        self.horizontalLayout_3.addWidget(self.ListProtocol)
-        self.ListInfo = QtWidgets.QTextBrowser(self.centralwidget)
-        self.ListInfo.setObjectName("ListInfo")
-        self.horizontalLayout_3.addWidget(self.ListInfo)
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.tableList = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableList.setGridStyle(QtCore.Qt.SolidLine)
+        self.tableList.setObjectName("tableList")
+        self.tableList.setColumnCount(7)
+        self.tableList.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableList.setHorizontalHeaderItem(6, item)
+        self.verticalLayout.addWidget(self.tableList)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
@@ -150,15 +115,10 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.Btnclear.clicked.connect(self.DetailText.clear)
         self.Btnclear.clicked.connect(self.Binarytext.clear)
-        self.Btnclear.clicked.connect(self.ListNumber.clear)
-        self.Btnclear.clicked.connect(self.ListSrc.clear)
-        self.Btnclear.clicked.connect(self.ListDst.clear)
-        self.Btnclear.clicked.connect(self.ListLength.clear)
-        self.Btnclear.clicked.connect(self.ListProtocol.clear)
-        self.Btnclear.clicked.connect(self.ListInfo.clear)
         self.ListButton.clicked.connect(MainWindow.snip)
         self.stopBtn.clicked.connect(MainWindow.stop)
         self.continueBtn.clicked.connect(MainWindow.conti)
+        self.Btnclear.clicked.connect(MainWindow.clearTable)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -170,72 +130,21 @@ class Ui_MainWindow(object):
         self.stopBtn.setText(_translate("MainWindow", "stop"))
         self.Btnclear.setText(_translate("MainWindow", "Clear"))
         self.label_3.setText(_translate("MainWindow", "Packet List"))
-        self.label_5.setText(_translate("MainWindow", "number"))
-        self.label_6.setText(_translate("MainWindow", "src"))
-        self.label_7.setText(_translate("MainWindow", "dst"))
-        self.label_9.setText(_translate("MainWindow", "length"))
-        self.label_8.setText(_translate("MainWindow", "protocol"))
-        self.label_10.setText(_translate("MainWindow", "info"))
-        self.ListNumber.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">number</p></body></html>',
-            )
-        )
-        self.ListSrc.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">src</p></body></html>',
-            )
-        )
-        self.ListDst.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">dst</p></body></html>',
-            )
-        )
-        self.ListLength.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">length</p></body></html>',
-            )
-        )
-        self.ListProtocol.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">protocol</p></body></html>',
-            )
-        )
-        self.ListInfo.setHtml(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">info</p></body></html>',
-            )
-        )
+        self.tableList.setSortingEnabled(False)
+        item = self.tableList.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Sniffer count"))
+        item = self.tableList.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "src"))
+        item = self.tableList.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "dst"))
+        item = self.tableList.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "protocol"))
+        item = self.tableList.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "length"))
+        item = self.tableList.horizontalHeaderItem(5)
+        item.setText(_translate("MainWindow", "info"))
+        item = self.tableList.horizontalHeaderItem(6)
+        item.setText(_translate("MainWindow", "view"))
         self.label_2.setText(_translate("MainWindow", "Packet Detail"))
         self.DetailText.setHtml(
             _translate(

@@ -2,6 +2,7 @@ from Ui_qtLearn import Ui_MainWindow
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 
 import sys
 import time
@@ -9,6 +10,11 @@ import time
 sys.path.append("..")
 from protocol import *
 from sniffer import MySniffer
+
+# self.ListButton.clicked.connect(MainWindow.snip)
+# self.stopBtn.clicked.connect(MainWindow.stop)
+# self.continueBtn.clicked.connect(MainWindow.conti)
+# self.Btnclear.clicked.connect(MainWindow.clearTable)
 
 
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -21,21 +27,29 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.snipFlag = True
         self.snipTimes = 1
         self.DetailInfo = ""
+        self.dataDict = {}
 
-    # def outputText(self, text):
-    #     cursor = self.ListText.textCursor()
-    #     cursor.movePosition(QTextCursor.atEnd)
-    #     cursor.insertText(text)
-    #     self.ListText.setTextCursor(cursor)
-    #     self.ListText.ensureCursorVisible()
+    def printThis(self, id):
+        self.DetailText.clear()
+        self.Binarytext.clear()
+        data = self.dataDict[id]
+        DetailInfo = "pass"
+        self.print_detail(DetailInfo)
+        self.print_binary(data)
 
-    def print_list(self, head):
-        self.ListNumber.append(str(self.count))  # self.count
-        self.ListSrc.append(head.src)
-        self.ListDst.append(head.dst)
-        self.ListProtocol.append(head.protocol)
-        self.ListLength.append(str(self.length))
-        self.ListInfo.append(head.info)
+    def print_list(self, header):
+        row = self.tableList.rowCount()
+        tmp_cnt = self.count
+        self.tableList.setRowCount(row + 1)
+        self.tableList.setItem(row, 0, QTableWidgetItem(str(self.count)))
+        self.tableList.setItem(row, 1, QTableWidgetItem(header.src))
+        self.tableList.setItem(row, 2, QTableWidgetItem(header.dst))
+        self.tableList.setItem(row, 3, QTableWidgetItem(header.protocol))
+        self.tableList.setItem(row, 4, QTableWidgetItem(str(self.length)))
+        self.tableList.setItem(row, 5, QTableWidgetItem(header.info))
+        enablePacket = QtWidgets.QPushButton(self.centralwidget)
+        self.tableList.setCellWidget(row, 6, enablePacket)
+        enablePacket.clicked.connect(lambda: self.printThis(tmp_cnt))
 
     def print_detail(self, str):
         self.DetailText.append(str)
@@ -53,19 +67,58 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def conti(self):
         self.snipFlag = True
 
+    def clearTable(self):
+        row = self.tableList.rowCount()
+        for _ in range(row):
+            self.tableList.removeRow(0)
+        self.tableList.setRowCount(0)
+        self.dataDict.clear()
+
+    def detectTCP(self):
+        cnt = 0
+        self.snipFlag = True
+        while self.snipFlag:
+            cnt += 1
+            self.sniffer.sniffing()
+            data = self.sniffer.data
+            mac_head = Frame(data[:14])
+            if mac_head.protocol == "IP":
+                ip_head = IP(data[14:34])
+                if ip_head.protocol == "TCP":
+                    tcp_header = TCP(data[34:54])
+                    tcp_header.src = ip_head.src
+                    tcp_header.dst = ip_head.dst
+                    tcp_header.protocol = ip_head.protocol
+                    self.print_list(tcp_header)
+                    self.DetailInfo += "TCP: \n"
+                    self.DetailInfo += tcp_header.detailInfo
+                    self.count += 1
+                    self.length = len(data)
+                    self.dataDict[self.count] = data
+                    self.DetailText.clear()
+                    self.print_detail(self.DetailInfo)
+                    self.DetailInfo = ""
+                    self.Binarytext.clear()
+                    self.print_binary(data)
+                    self.snipFlag = False
+                    cnt = 0
+            print(cnt)
+            if cnt == 100:
+                print("sleep")
+                self.snipFlag = False
+
     def snip(self):
-        # while self.snipFlag:
+        # self.detectTCP()
         for _ in range(self.snipTimes):
             self.sniffer.sniffing()
             data = self.sniffer.data
             self.count += 1
             self.length = len(data)
+            self.dataDict[self.count] = data
 
             mac_head = Frame(data[:14])
             self.DetailInfo += str("Frame: \n")
             self.DetailInfo += str(mac_head.detailInfo)
-            # print(self.DetailInfo)
-            # print(mac_head.info)
 
             if mac_head.protocol == "IP":
                 ip_head = IP(data[14:34])
@@ -102,18 +155,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.DetailInfo = ""
             self.Binarytext.clear()
             self.print_binary(data)
-            # time.sleep(1)
 
-            # address = self.sniffer.address
-            # print(address)
-            # for it in address:
-            #     if type(it) == bytes:
-            #         print(it.hex())
-            #     else:
-            #         print(it)
-
-
-# self.ListButton.clicked.connect(MainWindow.snip)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
