@@ -45,3 +45,9 @@ class Frame(Structure):  # 14 bytes
         except:
             self.protocol = self.protocol_map[0x9999]
             self.info = "Unknown protocol is: 0x%x" % self.protocol_hex
+
+        self.detailInfo = "dst mac:%s\nsrc mac:%s\nprotocol:%s\n" % (
+            self.dst,
+            self.src,
+            self.protocol,
+        )

@@ -29,8 +29,16 @@ class TCP(Structure):  # 20 bytes
         self.dstPort = self.dst_port
         self.src = ""
         self.dst = ""
+
         self.protocol = ""
         self.info = "Port: %s -> %s . Seq: %s Ack: %s" % (
+            self.srcPort,
+            self.dstPort,
+            self.seq,
+            self.ack,
+        )
+
+        self.detailInfo = "src Port:%s -> Dst Port:%s\nSeq:%s Ack:%s\n" % (
             self.srcPort,
             self.dstPort,
             self.seq,

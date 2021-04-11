@@ -19,6 +19,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.count = 0
         self.length = 0
         self.snipFlag = True
+        self.snipTimes = 1
+        self.DetailInfo = ""
 
     # def outputText(self, text):
     #     cursor = self.ListText.textCursor()
@@ -41,7 +43,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def print_binary(self, bytesData):
         c = bytesData.hex()
         c = " ".join(c[i : i + 2] for i in range(0, len(c), 2))
-        c = "\n".join(c[i : i + 24] for i in range(0, len(c), 24))
+        # c = "| ".join(c[i : i + 24] for i in range(0, len(c), 48))
+        c = "\n".join(c[i : i + 48] for i in range(0, len(c), 48))
         self.Binarytext.append(c)
 
     def stop(self):
@@ -52,41 +55,62 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def snip(self):
         # while self.snipFlag:
-        self.sniffer.sniffing()
-        data = self.sniffer.data
-        self.count += 1
-        self.length = len(data)
+        for _ in range(self.snipTimes):
+            self.sniffer.sniffing()
+            data = self.sniffer.data
+            self.count += 1
+            self.length = len(data)
 
-        mac_head = Frame(data[:14])
+            mac_head = Frame(data[:14])
+            self.DetailInfo += str("Frame: \n")
+            self.DetailInfo += str(mac_head.detailInfo)
+            # print(self.DetailInfo)
+            # print(mac_head.info)
 
-        if mac_head.protocol == "IP":
-            ip_head = IP(data[14:34])
+            if mac_head.protocol == "IP":
+                ip_head = IP(data[14:34])
 
-            if ip_head.protocol == "TCP":
-                tcp_header = TCP(data[34:54])
-                tcp_header.src = ip_head.src
-                tcp_header.dst = ip_head.dst
-                tcp_header.protocol = ip_head.protocol
-                self.print_list(tcp_header)
+                if ip_head.protocol == "TCP":
+                    tcp_header = TCP(data[34:54])
+                    tcp_header.src = ip_head.src
+                    tcp_header.dst = ip_head.dst
+                    tcp_header.protocol = ip_head.protocol
+                    self.print_list(tcp_header)
+                    self.DetailInfo += "TCP: \n"
+                    self.DetailInfo += tcp_header.detailInfo
+
+                else:
+                    self.print_list(ip_head)
+                    self.print_detail("Unfinished IP protocol")
+
+            elif mac_head.protocol == "ARP":
+                arp_head = ARP(data[14:42])
+                self.print_list(arp_head)
+                self.DetailInfo += "ARP: \n"
+                self.DetailInfo += arp_head.detailInfo
+
+            elif mac_head.protocol == "IPv6":
+                self.print_list(mac_head)
+                self.print_detail("Frame head: Protocol: %s" % (mac_head.protocol))
 
             else:
-                self.print_list(ip_head)
-                self.print_detail("Unfinished IP protocol")
+                self.print_detail("Unfinished Frame protocol")
 
-        elif mac_head.protocol == "ARP":
-            arp_head = ARP(data[14:42])
-            self.print_list(arp_head)
+            self.DetailText.clear()
+            self.print_detail(self.DetailInfo)
 
-        elif mac_head.protocol == "IPv6":
-            self.print_list(mac_head)
-            self.print_detail("Frame head: Protocol: %s" % (mac_head.protocol))
+            self.DetailInfo = ""
+            self.Binarytext.clear()
+            self.print_binary(data)
+            # time.sleep(1)
 
-        else:
-            self.print_detail("Unfinished Frame protocol")
-
-        self.Binarytext.clear()
-        self.print_binary(data)
-        # time.sleep(1)
+            # address = self.sniffer.address
+            # print(address)
+            # for it in address:
+            #     if type(it) == bytes:
+            #         print(it.hex())
+            #     else:
+            #         print(it)
 
 
 # self.ListButton.clicked.connect(MainWindow.snip)

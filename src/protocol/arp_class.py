@@ -37,6 +37,8 @@ class ARP(Structure):  #  28 bytes
         self.src_ip_str = socket.inet_ntoa(struct.pack("<I", self.src_ip))
         self.dst_ip_str = socket.inet_ntoa(struct.pack("<I", self.dst_ip))
         self.src = self.dst = ""
+        self.info = ""
+        self.detailInfo = ""
 
         for i in reversed(self.src_mac):
             self.src += "%s." % str(i)

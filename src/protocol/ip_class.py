@@ -5,16 +5,19 @@ import time
 
 
 class IP(Structure):  # 20 bytes
+    _pack_ = 2
     _fields_ = [
-        ("ihl", c_ubyte, 4),  # 4bit
-        ("version", c_ubyte, 4),
+        ("version", c_ubyte, 4),  # In IPv4 is set to 0100, which indicates 4 in binary
+        ("headerLength", c_ubyte, 4),  # how many 32-bit words are present in the header
         ("tos", c_ubyte),
-        ("len", c_ushort),
+        ("totalLength", c_ushort),  # The total length is measured in bytes
         ("id", c_ushort),
-        ("offset", c_ushort),
+        ("flags", c_ubyte, 3),
+        ("offset", c_ushort, 13),
+        # ("offset", c_ushort),
         ("ttl", c_ubyte),  # 8bit
         ("protocol_num", c_ubyte),
-        ("sum", c_ushort),  # 16bit
+        ("checksum", c_ushort),  # 16bit
         ("srcIP", c_uint),  # 32bit
         ("dstIP", c_uint),  # 32bit
     ]
@@ -47,7 +50,12 @@ class IP(Structure):  # 20 bytes
         self.src = socket.inet_ntoa(struct.pack("<I", self.srcIP))
         self.dst = socket.inet_ntoa(struct.pack("<I", self.dstIP))
 
-        self.info = "ttl: %s" % (self.ttl)
+        self.info = "version: %s ttl: %s head: %s total: %s" % (
+            self.version,
+            self.ttl,
+            self.headerLength,
+            self.totalLength,
+        )
         self.errorFlag = False
         self.errorInfo = ""
         self.protocol = ""
@@ -61,3 +69,14 @@ class IP(Structure):  # 20 bytes
             self.errorFlag = True
             self.errorInfo = "warning by hsq !!! Protocol is: %s " % self.protocol
             time.sleep(1)
+
+        self.detailInfo = "version:%d\nheader length:%d\ntotal length:%d\nttl:%d\nprotocol:%s\nchecksum:%d\nsrc:%s\ndst:%s\n" % (
+            self.version,
+            self.headerLength,
+            self.totalLength,
+            self.ttl,
+            self.protocol,
+            self.checksum,
+            self.src,
+            self.dst,
+        )
