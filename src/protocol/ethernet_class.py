@@ -27,7 +27,7 @@ class EthernetII(Structure):  # 14 bytes
         self.src = ""
         self.dst = ""
 
-        for i in reversed(self.src_mac):
+        for i in self.src_mac:
             i = hex(i)
             self.src += "%s:" % str(i[2:])
         self.src = self.src[:-1]
@@ -43,7 +43,7 @@ class EthernetII(Structure):  # 14 bytes
         if flag:
             self.dst = "Broadcast"
         else:
-            for i in reversed(self.dst_mac):
+            for i in self.dst_mac:
                 i = hex(i)
                 self.dst += "%s:" % str(i[2:])
             self.dst = self.dst[:-1]

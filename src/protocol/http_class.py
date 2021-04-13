@@ -4,6 +4,7 @@ class Http:
         self.statusLine = ""
         self.headerLine = ""
         self.entityBody = ""
+        self.protocol = "HTTP"
         flag1 = False
         flag2 = False
         cnt = 0

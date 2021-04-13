@@ -126,7 +126,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def detectHTTP(self):
         # for _ in range(self.snipTimes):
         while 1:
-            print("snif")
+            # print("...")
             self.sniffer.sniffing()
             myPacket = Packet(self.sniffer.data, self.sniffer.address)
             if hasattr(myPacket, "httpHead"):
@@ -143,7 +143,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def snip(self):
         for _ in range(self.snipTimes):
-            print("sniffing")
+            # print("sniffing")
             self.sniffer.sniffing()
             myPacket = Packet(self.sniffer.data, self.sniffer.address)
             self.count += 1

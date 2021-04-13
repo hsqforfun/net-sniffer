@@ -8,7 +8,7 @@ from ctypes import *
 # ("src", c_uint),  # 32bit
 
 
-class IPv6(Structure):  # 20 bytes
+class IPv6(Structure):  # 40 bytes
     _pack_ = 2
     _fields_ = [
         ("version", c_ubyte, 4),
@@ -28,23 +28,48 @@ class IPv6(Structure):  # 20 bytes
     def __init__(self, buffer=None):
         self.src = self.dst = ""
         flag = 0
-        for i in reversed(self.source):
+        zero = False
+
+        for i in self.source:
             i = hex(i)
             if flag == 0:
-                self.src += "%s" % str(i[2:])
+                if i == "0x0":
+                    zero = True
+                else:
+                    self.src += "%s" % str(i[2:])
                 flag = 1
             else:
+                if i == "0x0":
+                    if zero:
+                        self.src += ":"
+                    else:
+                        self.src += "%s:" % str(i[2:])
+                else:
+                    self.src += "%s:" % str(i[2:])
+                zero = False
                 flag = 0
-                self.src += "%s:" % str(i[2:])
+
         flag = 0
-        for i in reversed(self.destination):
+        zero = False
+
+        for i in self.destination:
             i = hex(i)
             if flag == 0:
-                self.dst += "%s" % str(i[2:])
+                if i == "0x0":
+                    zero = True
+                else:
+                    self.dst += "%s" % str(i[2:])
                 flag = 1
             else:
+                if i == "0x0":
+                    if zero:
+                        self.dst += ":"
+                    else:
+                        self.dst += "%s:" % str(i[2:])
+                else:
+                    self.dst += "%s:" % str(i[2:])
+                zero = False
                 flag = 0
-                self.dst += "%s:" % str(i[2:])
 
         self.src = self.src[:-1]
         self.dst = self.dst[:-1]
@@ -73,11 +98,16 @@ class IPv6(Structure):  # 20 bytes
         try:
             self.nxt = protocol_map[self.NextHeader]
         except:
-            pass
-        # try:
-        #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
-        #     self.protocol = self.protocol_map[self.protocol_num]
-        # except:
-        #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
-        #     self.protocol = str(self.protocol_num)
-        #     print("warning by hsq !!!")
+            self.nxt = self.NextHeader
+
+        self.detailInfo = "IPv6:\nsrc:%s\ndst:%s\nNext Header:%s\n\n" % (
+            self.src,
+            self.dst,
+            self.nxt,
+        )
+
+        # self.info = "Port: %s -> %s Len=%s" % (
+        #     self.srcPort,
+        #     self.dstPort,
+        #     self.udpLength,
+        # )

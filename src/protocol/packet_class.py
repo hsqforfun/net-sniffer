@@ -3,6 +3,9 @@ import struct
 from ctypes import *
 import time
 from . import *
+from .ipv6_class import IPv6
+from .icmpv6_class import ICMPv6
+from .http_class import Http
 
 
 class Packet(Structure):
@@ -42,8 +45,14 @@ class Packet(Structure):
             if self.ipHead.protocol == "TCP":
                 self.tcpHead = TCP(self.data[34:54])
                 self.updateMe(self.tcpHead)
-                if self.tcpHead.srcPort == 80 | self.tcpHead.dstPort == 80:
-                    self.httpHead = Http(self.data[54:])
+                self.tcpOptionLen = self.tcpHead.len
+                if self.tcpOptionLen != 0:
+                    self.tcpOption = TCPOption(self.data[54 : self.tcpOptionLen])
+                if 54 + self.tcpOptionLen - self.length > 10:
+                    if self.tcpHead.srcPort == 80 or self.tcpHead.dstPort == 80:
+                        self.httpHead = Http(self.data[54 + self.tcpOptionLen :])
+                        print("-----------------------")
+                        self.updateMe(self.httpHead)
             elif self.ipHead.protocol == "UDP":
                 self.udpHead = TCP(self.data[34:])
                 self.updateMe(self.udpHead)
@@ -58,9 +67,12 @@ class Packet(Structure):
                 self.updateMe(self.tcpHead)
                 if self.tcpHead.srcPort == 80 | self.tcpHead.dstPort == 80:
                     self.httpHead = Http(self.data[54:])
-            elif self.ipHead.protocol == "UDP":
+            elif self.ipv6Head.protocol == "UDP":
                 self.udpHead = TCP(self.data[54:])
                 self.updateMe(self.udpHead)
+            elif self.ipv6Head.protocol == "IPv6-ICMP":
+                self.icmpv6Head = ICMPv6(self.data[54:])
+                self.updateMe(self.icmpv6Head)
             else:
                 pass
 
