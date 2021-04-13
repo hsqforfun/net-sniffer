@@ -7,6 +7,16 @@ from ctypes import *
 # ("sum", c_ushort),  # 16bit
 # ("src", c_uint),  # 32bit
 
+Nonce = 0x100
+CWR = 0x080
+ECNEcho = 0x040
+Urgent = 0x020
+Acknowledgement = 0x010
+Push = 0x008
+Reset = 0x004
+Syn = 0x002
+Fin = 0x001
+
 
 class TCP(Structure):  # 20 bytes
     _fields_ = [
@@ -27,29 +37,43 @@ class TCP(Structure):  # 20 bytes
     def __init__(self, socket_buffer=None):
         self.srcPort = self.src_port
         self.dstPort = self.dst_port
-        self.src = ""
-        self.dst = ""
+        self.flagInfo = ""
+        self.protocol = "TCP"
 
-        self.protocol = ""
-        self.info = "Port: %s -> %s . Seq: %s Ack: %s" % (
-            self.srcPort,
-            self.dstPort,
-            self.seq,
-            self.ack,
+        if self.flags & Nonce:
+            self.flagInfo += "Non "
+        elif self.flags & CWR:
+            self.flagInfo += "CWR "
+        elif self.flags & ECNEcho:
+            self.flagInfo += "ECN"
+        elif self.flags & Urgent:
+            self.flagInfo += "URG "
+        elif self.flags & Acknowledgement:
+            self.flagInfo += "ACK "
+        elif self.flags & Push:
+            self.flagInfo += "PSH"
+        elif self.flags & Reset:
+            self.flagInfo += "RST "
+        elif self.flags & Syn:
+            self.flagInfo += "SYN "
+        elif self.flags & Fin:
+            self.flagInfo += "FIN "
+        self.flagInfo = "[%s]" % self.flagInfo[:-1]
+
+        self.detailInfo = (
+            "TCP:\nsrc Port:%s -> Dst Port:%s\nSeq:%s Ack:%s\nFlags:%s\n\n"
+            % (
+                self.srcPort,
+                self.dstPort,
+                self.seq,
+                self.ack,
+                self.flagInfo,
+            )
         )
 
-        self.detailInfo = "src Port:%s -> Dst Port:%s\nSeq:%s Ack:%s\n" % (
+        self.info = "Port: %s -> %s %s Win=%s" % (
             self.srcPort,
             self.dstPort,
-            self.seq,
-            self.ack,
+            self.flagInfo,
+            self.win_size,
         )
-
-        # self
-        # try:
-        #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
-        #     self.protocol = self.protocol_map[self.protocol_num]
-        # except:
-        #     self.protocol_map = {1: "ICMP", 6: "TCP", 17: "UDP"}
-        #     self.protocol = str(self.protocol_num)
-        #     print("warning by hsq !!!")

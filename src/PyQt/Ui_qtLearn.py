@@ -35,9 +35,12 @@ class Ui_MainWindow(object):
         self.ListButton.setFont(font)
         self.ListButton.setObjectName("ListButton")
         self.horizontalLayout_4.addWidget(self.ListButton)
-        self.continueBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.continueBtn.setObjectName("continueBtn")
-        self.horizontalLayout_4.addWidget(self.continueBtn)
+        self.HttpBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.HttpBtn.setObjectName("HttpBtn")
+        self.horizontalLayout_4.addWidget(self.HttpBtn)
+        self.tcpBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.tcpBtn.setObjectName("tcpBtn")
+        self.horizontalLayout_4.addWidget(self.tcpBtn)
         self.stopBtn = QtWidgets.QPushButton(self.centralwidget)
         self.stopBtn.setObjectName("stopBtn")
         self.horizontalLayout_4.addWidget(self.stopBtn)
@@ -57,9 +60,14 @@ class Ui_MainWindow(object):
         self.tableList = QtWidgets.QTableWidget(self.centralwidget)
         self.tableList.setGridStyle(QtCore.Qt.SolidLine)
         self.tableList.setObjectName("tableList")
-        self.tableList.setColumnCount(7)
+        self.tableList.setColumnCount(6)
         self.tableList.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignVCenter)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        font.setKerning(True)
+        item.setFont(font)
         self.tableList.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableList.setHorizontalHeaderItem(1, item)
@@ -71,8 +79,6 @@ class Ui_MainWindow(object):
         self.tableList.setHorizontalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableList.setHorizontalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableList.setHorizontalHeaderItem(6, item)
         self.verticalLayout.addWidget(self.tableList)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
@@ -83,9 +89,15 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setObjectName("label_4")
         self.verticalLayout.addWidget(self.label_4)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.Binarytext = QtWidgets.QTextBrowser(self.centralwidget)
         self.Binarytext.setObjectName("Binarytext")
-        self.verticalLayout.addWidget(self.Binarytext)
+        self.horizontalLayout.addWidget(self.Binarytext)
+        self.ASCIItext = QtWidgets.QTextBrowser(self.centralwidget)
+        self.ASCIItext.setObjectName("ASCIItext")
+        self.horizontalLayout.addWidget(self.ASCIItext)
+        self.verticalLayout.addLayout(self.horizontalLayout)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -115,10 +127,12 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.Btnclear.clicked.connect(self.DetailText.clear)
         self.Btnclear.clicked.connect(self.Binarytext.clear)
-        self.ListButton.clicked.connect(MainWindow.snip)
+        self.Btnclear.clicked.connect(self.ASCIItext.clear)
+        self.HttpBtn.clicked.connect(MainWindow.detectHTTP)
+        self.tcpBtn.clicked.connect(MainWindow.detectTCP)
         self.stopBtn.clicked.connect(MainWindow.stop)
-        self.continueBtn.clicked.connect(MainWindow.conti)
         self.Btnclear.clicked.connect(MainWindow.clearTable)
+        self.ListButton.clicked.connect(MainWindow.snip)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -126,7 +140,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Rukawa"))
         self.label.setText(_translate("MainWindow", "Rukawa Sniffer"))
         self.ListButton.setText(_translate("MainWindow", "Sniffer"))
-        self.continueBtn.setText(_translate("MainWindow", "continue"))
+        self.HttpBtn.setText(_translate("MainWindow", "HTTP"))
+        self.tcpBtn.setText(_translate("MainWindow", "tcp"))
         self.stopBtn.setText(_translate("MainWindow", "stop"))
         self.Btnclear.setText(_translate("MainWindow", "Clear"))
         self.label_3.setText(_translate("MainWindow", "Packet List"))
@@ -143,8 +158,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "length"))
         item = self.tableList.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "info"))
-        item = self.tableList.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "view"))
         self.label_2.setText(_translate("MainWindow", "Packet Detail"))
         self.DetailText.setHtml(
             _translate(
@@ -158,6 +171,16 @@ class Ui_MainWindow(object):
         )
         self.label_4.setText(_translate("MainWindow", "Packet Binary"))
         self.Binarytext.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:600; font-style:normal;\">\n"
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>',
+            )
+        )
+        self.ASCIItext.setHtml(
             _translate(
                 "MainWindow",
                 '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'

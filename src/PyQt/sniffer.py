@@ -90,3 +90,32 @@ class MySniffer:
     def myClear(self):
         self.data = bytes()
         self.address = bytes()
+
+
+class TCPSniffer:
+    def __init__(self):
+        self.ipAddr, self.hostName = get_something()
+        self.socket_proto = socket.IPPROTO_TCP
+        self.sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, self.socket_proto)
+        port = 0
+        self.sniffer.bind((self.ipAddr, port))
+        self.sniffer.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+
+    def sniffing(self):
+        while 1:
+            print("Listening ...")
+            data, address = self.sniffer.recvfrom(65565)
+            cnt = 0
+            for i in data:
+                cnt += 1
+                # print(chr(i), end=" ")
+                print(hex(i)[2:], end=" ")
+                if cnt % 16 == 0:
+                    cnt = 0
+                    print()
+            break
+
+
+if __name__ == "__main__":
+    tcp = TCPSniffer()
+    tcp.sniffing()

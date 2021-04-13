@@ -58,7 +58,6 @@ class IP(Structure):  # 20 bytes
         )
         self.errorFlag = False
         self.errorInfo = ""
-        self.protocol = ""
 
         try:
             self.protocol = self.protocol_map[self.protocol_num]
@@ -68,9 +67,9 @@ class IP(Structure):  # 20 bytes
             self.protocol = str(self.protocol_num)
             self.errorFlag = True
             self.errorInfo = "warning by hsq !!! Protocol is: %s " % self.protocol
-            time.sleep(1)
+            # time.sleep(1)
 
-        self.detailInfo = "version:%d\nheader length:%d\ntotal length:%d\nttl:%d\nprotocol:%s\nchecksum:%d\nsrc:%s\ndst:%s\n" % (
+        self.detailInfo = "IP:\nversion:%d\nheader length:%d\ntotal length:%d\nttl:%d\nprotocol:%s\nchecksum:%d\nsrc:%s\ndst:%s\n\n" % (
             self.version,
             self.headerLength,
             self.totalLength,
