@@ -23,13 +23,13 @@ class TCPOption:
 
 
 class TCP(Structure):  # 20 bytes
+    _pack_ = 2
     _fields_ = [
         ("src_port", c_ushort),
         ("dst_port", c_ushort),
         ("seq", c_uint),
         ("ack", c_uint),
-        ("len", c_ubyte, 4),
-        ("res", c_ubyte, 4),
+        ("lenres", c_ubyte),
         ("flags", c_ubyte),
         ("win_size", c_ushort),
         ("checksum", c_ubyte),
@@ -44,7 +44,9 @@ class TCP(Structure):  # 20 bytes
         self.dstPort = socket.ntohs(self.dst_port)
         self.flagInfo = ""
         self.protocol = "TCP"
-        print(self.len)
+        self.len = int((self.lenres & 0xF0) / 4)
+        self.seq = socket.ntohl(self.seq)
+        self.ack = socket.ntohl(self.ack)
 
         if self.flags & CWR:
             self.flagInfo += "CWR "

@@ -45,13 +45,13 @@ class Packet(Structure):
             if self.ipHead.protocol == "TCP":
                 self.tcpHead = TCP(self.data[34:54])
                 self.updateMe(self.tcpHead)
-                self.tcpOptionLen = self.tcpHead.len
+                self.tcpOptionLen = self.tcpHead.len - 20
                 if self.tcpOptionLen != 0:
                     self.tcpOption = TCPOption(self.data[54 : self.tcpOptionLen])
-                if 54 + self.tcpOptionLen - self.length > 10:
+                if self.length - 54 - self.tcpOptionLen > 10:
                     if self.tcpHead.srcPort == 80 or self.tcpHead.dstPort == 80:
                         self.httpHead = Http(self.data[54 + self.tcpOptionLen :])
-                        print("-----------------------")
+                        # print("-----------------------")
                         self.updateMe(self.httpHead)
             elif self.ipHead.protocol == "UDP":
                 self.udpHead = TCP(self.data[34:])
