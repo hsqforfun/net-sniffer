@@ -60,9 +60,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="stopBtn">
+       <widget class="QPushButton" name="tlsBtn">
         <property name="text">
-         <string>stop</string>
+         <string>tls</string>
         </property>
        </widget>
       </item>

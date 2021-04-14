@@ -14,7 +14,7 @@ def get_url(url):
     # 模拟http协议
     while 1:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((host, 80))
+        client.connect((host, 443))
         client.send(
             "GET {} HTTP/1.1\r\nHost:{}\r\nConnection:close\r\n\r\n".format(
                 path, host

@@ -67,7 +67,7 @@ class TCP(Structure):  # 20 bytes
         self.flagInfo = "[%s]" % self.flagInfo[:-1]
 
         self.detailInfo = (
-            "TCP:\Port:%s -> %s\nSeq:%s Ack:%s\nFlags:%s\nHeader Length:%s\n\n"
+            "TCP:\nPort:%s -> %s\nSeq:%s Ack:%s\nFlags:%s\nHeader Length:%s\n\n"
             % (self.srcPort, self.dstPort, self.seq, self.ack, self.flagInfo, self.len)
         )
 

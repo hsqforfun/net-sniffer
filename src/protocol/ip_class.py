@@ -69,7 +69,7 @@ class IP(Structure):  # 20 bytes
             self.errorInfo = "warning by hsq !!! Protocol is: %s " % self.protocol
             # time.sleep(1)
 
-        self.detailInfo = "IP:\nversion:%d\nheader length:%d\ntotal length:%d\nttl:%d\nprotocol:%s\nchecksum:%d\nsrc:%s\ndst:%s\n\n" % (
+        self.detailInfo = "IP:\nversion:%d\nheader length:%d\ntotal length:%d\nttl:%d\nNext Protocol:%s\nchecksum:%d\nsrc:%s\ndst:%s\n\n" % (
             self.version,
             self.headerLength,
             self.totalLength,

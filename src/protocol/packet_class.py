@@ -6,6 +6,19 @@ from . import *
 from .ipv6_class import IPv6
 from .icmpv6_class import ICMPv6
 from .http_class import Http
+from .tls_class import TLS
+
+
+httpPort = [443, 80]
+tlsPort = [443]
+httpString = ["GET", "POST", "HTTP"]
+
+
+def hasString(StringItem, Target):
+    for i in StringItem:
+        if i in Target:
+            return True
+    return False
 
 
 class Packet(Structure):
@@ -49,10 +62,22 @@ class Packet(Structure):
                 if self.tcpOptionLen != 0:
                     self.tcpOption = TCPOption(self.data[54 : self.tcpOptionLen])
                 if self.length - 54 - self.tcpOptionLen > 10:
-                    if self.tcpHead.srcPort == 80 or self.tcpHead.dstPort == 80:
+                    pieceStr = str(
+                        self.data[54 + self.tcpOptionLen : 74 + self.tcpOptionLen]
+                    )
+                    if (
+                        (self.tcpHead.srcPort in httpPort)
+                        or (self.tcpHead.dstPort in httpPort)
+                    ) and (hasString(httpString, pieceStr)):
                         self.httpHead = Http(self.data[54 + self.tcpOptionLen :])
-                        # print("-----------------------")
                         self.updateMe(self.httpHead)
+                    elif (
+                        (self.tcpHead.srcPort in tlsPort)
+                        or (self.tcpHead.dstPort in tlsPort)
+                    ) and (not hasString(httpString, pieceStr)):
+                        self.tlsHead = TLS(self.data[54 + self.tcpOptionLen :])
+                        self.updateMe(self.tlsHead)
+
             elif self.ipHead.protocol == "UDP":
                 self.udpHead = TCP(self.data[34:])
                 self.updateMe(self.udpHead)
@@ -82,3 +107,11 @@ class Packet(Structure):
 
         else:
             self.detailInfo += "Unfinished Ethernet-II protocol"
+
+    def hasHttpString(self, https=0):
+        ret = "HTTP" in str(self.data[54 + self.tcpOptionLen : 74 + self.tcpOptionLen])
+        if https == 0:
+            print(ret)
+            ret
+        else:
+            not ret

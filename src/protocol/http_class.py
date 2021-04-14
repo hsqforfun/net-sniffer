@@ -5,9 +5,10 @@ class Http:
         self.headerLine = ""
         self.entityBody = ""
         self.protocol = "HTTP"
-
-        self.httpInfo = str(self.data, encoding="utf-8")
-
+        try:
+            self.httpInfo = str(self.data, encoding="utf-8")  # , encoding="utf-8"
+        except:
+            self.httpInfo = str(self.data)  # , encoding="utf-8"
         self.detailInfo = "%s\n" % self.httpInfo
 
         # self.detailInfo += "HTTP headerLine: %s\n" % self.headerLine

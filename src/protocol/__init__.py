@@ -11,6 +11,7 @@ from .http_class import Http
 from .ipv6_class import IPv6
 from .udp_class import UDP
 from .icmpv6_class import ICMPv6
+from .tls_class import TLS
 
 __all__ = [
     "VoidHeader",
@@ -25,4 +26,5 @@ __all__ = [
     "IPv6",
     "UDP",
     "ICMPv6",
+    "TLS",
 ]

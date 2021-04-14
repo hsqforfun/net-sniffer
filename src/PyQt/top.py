@@ -31,7 +31,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.count = 0
         self.length = 0
         self.snipFlag = True
-        self.snipTimes = 10
+        self.snipTimes = 1
         self.detailInfo = ""
         self.dataDict = {}
 
@@ -67,10 +67,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tableList.setItem(row, 1, QTableWidgetItem("localhost"))
         else:
             self.tableList.setItem(row, 1, QTableWidgetItem(packet.src))
+
         if self.sniffer.ipAddr == packet.dst:
             self.tableList.setItem(row, 2, QTableWidgetItem("localhost"))
         else:
             self.tableList.setItem(row, 2, QTableWidgetItem(packet.dst))
+
         self.tableList.setItem(row, 3, QTableWidgetItem(packet.protocol))
         self.tableList.setItem(row, 4, QTableWidgetItem(str(packet.length)))
         self.tableList.setItem(row, 5, QTableWidgetItem(packet.info))
@@ -105,31 +107,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def conti(self):
         self.snipFlag = True
 
-    def detectTCP(self):
-        for _ in range(self.snipTimes * 10):
-            # while 1:
-            print("snif")
-            self.sniffer.sniffing()
-            myPacket = Packet(self.sniffer.data, self.sniffer.address)
-            if hasattr(myPacket, "tcpHead"):
-                self.count += 1
-                self.print_list(myPacket)
-                self.clearText()
-                self.print_detail(myPacket.detailInfo)
-                self.print_binary(myPacket.data)
-
-                tmpCache = data_cache(myPacket)
-                self.dataDict[self.count] = tmpCache
-                # break
-            time.sleep(0.1)
-
-    def detectHTTP(self):
-        # for _ in range(self.snipTimes):
+    def detect(self, proto="tcpHead"):
         while 1:
-            # print("...")
             self.sniffer.sniffing()
             myPacket = Packet(self.sniffer.data, self.sniffer.address)
-            if hasattr(myPacket, "httpHead"):
+            if hasattr(myPacket, proto):
                 self.count += 1
                 self.print_list(myPacket)
                 self.clearText()
@@ -140,6 +122,15 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.dataDict[self.count] = tmpCache
                 break
             time.sleep(0.01)
+
+    def detectTCP(self):
+        self.detect("tcpHead")
+
+    def detectHTTP(self):
+        self.detect("httpHead")
+
+    def detectTLS(self):
+        self.detect("tlsHead")
 
     def snip(self):
         for _ in range(self.snipTimes):
