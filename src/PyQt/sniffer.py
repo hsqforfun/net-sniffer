@@ -80,6 +80,9 @@ class MySniffer:
         self.snifferSocket.bind((self.hostName, self.port))
         self.snifferSocket.setsockopt(SOL_PACKET, PACKET_ADD_MEMBERSHIP, packet_mreq)
 
+        if os.name == "nt":
+            snifferSocket.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+
     def sniffing(self):
         try:
             self.data, self.address = self.snifferSocket.recvfrom(65565)
