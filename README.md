@@ -2,7 +2,7 @@
 
 
 
-## 要求
+## 实验要求
 
 ![要求](./pic/要求.png)
 
@@ -24,29 +24,53 @@ ICMP TCP/UDP TLS HTTP
 
 
 
-### 类型
 
-![](./pic/python-net-proto.png)
+
+## 注意事项：
+
+语言：python3
+
+库：netifaces socket ctypes
+
+
+
+## 学习
+
+### 协议端口
+
+![](/home/hsq/git/net-sniffer/pic/python-net-proto.png)
 
 HTTPS: 443
 
-![](./pic/tls.png)
+![](/home/hsq/git/net-sniffer/pic/tls.png)
 
-![](./pic/tls2.png)
+![](/home/hsq/git/net-sniffer/pic/tls2.png)
 
-### **TLS**
+### 协议报头
+
+#### 层级结构
+
+![OSI分层模型](/home/hsq/git/net-sniffer/pic/tcp-level.png)
+
+![](/home/hsq/git/net-sniffer/pic/fram.png)
+
+![](/home/hsq/git/net-sniffer/pic/level.png)
+
+
+
+#### **TLS**
 
 **TCP 三次握手 + SSL/TLS 握手：**
 
-![](./pic/tls-shake.png)
+![](/home/hsq/git/net-sniffer/pic/tls-shake.png)
 
-### IP报头
+#### IP报头
 
-![](./pic/ip-head.png)
+![](/home/hsq/git/net-sniffer/pic/ip-head.png)
 
-### TCP报头
+#### TCP报头
 
-![](./pic/tcp-head.png)
+![](/home/hsq/git/net-sniffer/pic/tcp-head.png)
 
 注意：TCP中的报文信息是端口16位，IP信息在IP报头中32位的源、目的。
 
@@ -54,19 +78,9 @@ HTTPS: 443
 
 
 
-## 学习
+### 库
 
-### 层级
-
-![OSI分层模型](./pic/tcp-level.png)
-
-![](./pic/fram.png)
-
-![](./pic/level.png)
-
-
-
-### socket
+#### socket
 
 ```python
 # socket_proto = socket.IPPROTO_IP 0  或者 socket.IPPROTO_ICMP 1       
@@ -86,7 +100,7 @@ print(sniffer.recvfrom(65565))
 print("Done.")
 ```
 
-#### 创建
+**创建**
 
 ![](./pic/socket-type.png)
 
@@ -96,7 +110,7 @@ print("Done.")
 
 
 
-#### 说明：
+**说明：**
 
 AF = Address Family
 PF = Protocol Family
@@ -105,7 +119,7 @@ PF = Protocol Family
 
 socket.ntohl == network to host long/short
 
-### netifaces
+#### netifaces
 
 ```python
 routingGateway = netifaces.gateways()["default"][netifaces.AF_INET][0]
@@ -117,19 +131,17 @@ routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["netma
 
 
 
-### ctypes
+#### ctypes
 
 构建ip数据报头的解析
 
 
 
-### struct
+#### struct
 
 ![](./pic/struct.png)
 
 
-
-### 图形化tkinter
 
 
 

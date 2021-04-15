@@ -1,20 +1,32 @@
+import sys
+import time
+import os
+
 from Ui_qtLearn import Ui_MainWindow
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextCursor, QCursor
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
-
-import sys
-import time
-
-sys.path.append("..")
-from protocol import *
 from sniffer import MySniffer
 
-# self.ListButton.clicked.connect(MainWindow.snip)
-# self.stopBtn.clicked.connect(MainWindow.stop)
-# self.continueBtn.clicked.connect(MainWindow.conti)
-# self.Btnclear.clicked.connect(MainWindow.clearTable)
+# path1 = os.path.abspath("./src")
+# sys.path.append(path1)
+sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
+from protocol import *
+
+
+class MyThread(QThread):  # 建立一个任务线程类
+    signal = pyqtSignal(str)  # 设置触发信号传递的参数数据类型,这里是字符串
+
+    def __init__(self):
+        super(MyThread, self).__init__()
+        self.flag = True
+
+    def run(self):  # 在启动线程后任务从这个函数里面开始执行
+        self.flag = True
+        while self.flag:
+            self.signal.emit(str("hsq"))
+            time.sleep(0.5)
 
 
 class data_cache:
@@ -34,6 +46,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.snipTimes = 1
         self.detailInfo = ""
         self.dataDict = {}
+        self.mythread = MyThread()
+        self.mythread.signal.connect(self.callback)
 
     def clearTable(self):
         row = self.tableList.rowCount()
@@ -76,6 +90,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableList.setItem(row, 3, QTableWidgetItem(packet.protocol))
         self.tableList.setItem(row, 4, QTableWidgetItem(str(packet.length)))
         self.tableList.setItem(row, 5, QTableWidgetItem(packet.info))
+        self.tableList.verticalScrollBar().setValue(row)
 
     def print_detail(self, str):
         self.DetailText.append(str)
@@ -102,10 +117,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.print_ascii(bytesData)
 
     def stop(self):
-        self.snipFlag = False
+        self.mythread.flag = False
 
-    def conti(self):
-        self.snipFlag = True
+    def callback(self, i):
+        self.snip()
+
+    def continuous(self):
+        self.mythread.start()
 
     def detect(self, proto="tcpHead"):
         while 1:
@@ -152,5 +170,4 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     ui = MyWindow()
     ui.show()
-    # sys.stdout = ui
     sys.exit(app.exec_())

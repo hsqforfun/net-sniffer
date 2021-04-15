@@ -27,12 +27,37 @@
        <bool>false</bool>
       </property>
       <property name="text">
-       <string>Rukawa Sniffer</string>
+       <string>Sniffer Control Button</string>
       </property>
      </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="tcpBtn">
+        <property name="text">
+         <string>TCP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="HttpBtn">
+        <property name="text">
+         <string>HTTP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tlsBtn">
+        <property name="text">
+         <string>TLS</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="ListButton">
         <property name="font">
@@ -46,23 +71,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="HttpBtn">
+       <widget class="QPushButton" name="CtnButton">
         <property name="text">
-         <string>HTTP</string>
+         <string>Continuous</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="tcpBtn">
+       <widget class="QPushButton" name="stpButton_2">
         <property name="text">
-         <string>tcp</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tlsBtn">
-        <property name="text">
-         <string>tls</string>
+         <string>stop</string>
         </property>
        </widget>
       </item>
@@ -100,11 +118,11 @@
       </property>
       <column>
        <property name="text">
-        <string>Sniffer count</string>
+        <string>No.</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>11</pointsize>
+         <pointsize>9</pointsize>
          <kerning>true</kerning>
         </font>
        </property>
@@ -198,40 +216,6 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1313</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuSniffer">
-    <property name="title">
-     <string>Sniffer</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuDetail">
-    <property name="title">
-     <string>List</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuDetal">
-    <property name="title">
-     <string>Detal</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuBinary">
-    <property name="title">
-     <string>Binary</string>
-    </property>
-   </widget>
-   <addaction name="menuSniffer"/>
-   <addaction name="menuDetail"/>
-   <addaction name="menuDetal"/>
-   <addaction name="menuBinary"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

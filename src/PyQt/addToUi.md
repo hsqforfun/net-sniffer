@@ -1,0 +1,12 @@
+        self.tableList.setColumnWidth(0, 40)
+        self.tableList.setColumnWidth(1, 200)
+        self.tableList.setColumnWidth(2, 200)
+        self.tableList.setColumnWidth(3, 150)
+        self.tableList.setColumnWidth(4, 100)
+        self.tableList.setColumnWidth(5, 500)
+
+        self.HttpBtn.clicked.connect(MainWindow.detectHTTP)
+        self.tcpBtn.clicked.connect(MainWindow.detectTCP)
+        self.tlsBtn.clicked.connect(MainWindow.detectTLS)
+        self.Btnclear.clicked.connect(MainWindow.clearTable)
+        self.ListButton.clicked.connect(MainWindow.snip)
