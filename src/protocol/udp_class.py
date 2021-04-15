@@ -2,21 +2,6 @@ import socket
 import struct
 from ctypes import *
 
-# ("ihl", c_ubyte, 4),  # 4bit
-# ("ttl", c_ubyte),  # 8bit
-# ("sum", c_ushort),  # 16bit
-# ("src", c_uint),  # 32bit
-
-Nonce = 0x100
-CWR = 0x080
-ECNEcho = 0x040
-Urgent = 0x020
-Acknowledgement = 0x010
-Push = 0x008
-Reset = 0x004
-Syn = 0x002
-Fin = 0x001
-
 
 class UDP(Structure):  # 20 bytes
     _fields_ = [
@@ -27,7 +12,7 @@ class UDP(Structure):  # 20 bytes
     ]
 
     def __new__(self, buffer=None):
-        return self.buffer(socket_buffer)
+        return self.from_buffer_copy(buffer)
 
     def __init__(self, buffer=None):
         self.srcPort = self.src_port

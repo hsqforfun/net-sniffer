@@ -22,37 +22,32 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>Sniffer Control Button</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalList"/>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="tcpBtn">
+       <widget class="QLabel" name="label">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>TCP</string>
+         <string>Sniffer Control Button</string>
+        </property>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignRight">
+       <widget class="QLabel" name="label_5">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>NIC select:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="HttpBtn">
-        <property name="text">
-         <string>HTTP</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tlsBtn">
-        <property name="text">
-         <string>TLS</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="nicBox"/>
       </item>
      </layout>
     </item>
@@ -78,7 +73,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="stpButton_2">
+       <widget class="QPushButton" name="stpButton">
         <property name="text">
          <string>stop</string>
         </property>
@@ -99,14 +94,43 @@
      </layout>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="tcpBtn">
+        <property name="text">
+         <string>TCP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tlsBtn">
+        <property name="text">
+         <string>TLS</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="HttpBtn">
+        <property name="text">
+         <string>HTTP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tcpConBtn">
+        <property name="text">
+         <string>TCP Continuous</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>Packet List</string>
       </property>
      </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalList"/>
     </item>
     <item>
      <widget class="QTableWidget" name="tableList">
@@ -153,6 +177,11 @@
       <column>
        <property name="text">
         <string>info</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>TracingInfo</string>
        </property>
       </column>
      </widget>

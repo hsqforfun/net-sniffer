@@ -66,9 +66,14 @@ def get_something():
 
 
 class MySniffer:
-    def __init__(self):
+    def __init__(self, InputNicName=None):
         super(MySniffer, self).__init__()
-        self.ipAddr, self.hostName = get_something()
+        self.ipAddr, self.nicName = get_something()
+
+        if InputNicName and (InputNicName in netifaces.interfaces()):
+            self.nic = str(InputNicName)
+        else:
+            self.nic = self.nicName
 
         self.port = 0
         self.data = bytes()
@@ -77,7 +82,10 @@ class MySniffer:
         self.snifferSocket = socket.socket(
             socket.AF_PACKET, socket.SOCK_RAW, socket.htons(ETH_P_ALL)
         )
-        self.snifferSocket.bind((self.hostName, self.port))
+        try:
+            self.snifferSocket.bind((self.nic, self.port))
+        except:
+            print(self.nic)
         self.snifferSocket.setsockopt(SOL_PACKET, PACKET_ADD_MEMBERSHIP, packet_mreq)
 
         # if os.name == "nt":
@@ -93,6 +101,9 @@ class MySniffer:
     def myClear(self):
         self.data = bytes()
         self.address = bytes()
+
+    def closeMe(self):
+        self.snifferSocket.close()
 
 
 if __name__ == "__main__":

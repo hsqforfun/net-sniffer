@@ -2,10 +2,22 @@ import socket
 import struct
 from ctypes import *
 import time
-from . import *
-from .ipv6_class import IPv6
-from .icmpv6_class import ICMPv6
+import sys
+
+sys.path.append
+
+from .tcp_class import TCP, TCPOption
+from .ip_class import IP
+from .ethernet_class import EthernetII
+from .arp_class import ARP
+from .frame_class import Frame
+from .void_class import VoidHeader
+
+# from .packet_class import Packet
 from .http_class import Http
+from .ipv6_class import IPv6
+from .udp_class import UDP
+from .icmpv6_class import ICMPv6
 from .tls_class import TLS
 
 
@@ -43,7 +55,8 @@ class Packet(Structure):
         self.protocol = ""
         self.src = ""
         self.dst = ""
-
+        self.row = None
+        self.dirt = False
         # 定义报头
         self.frame = Frame(self.length, self.addres)
         self.updateMe(self.frame)
@@ -79,7 +92,7 @@ class Packet(Structure):
                         self.updateMe(self.tlsHead)
 
             elif self.ipHead.protocol == "UDP":
-                self.udpHead = TCP(self.data[34:])
+                self.udpHead = UDP(self.data[34:])
                 self.updateMe(self.udpHead)
             else:
                 pass
@@ -88,13 +101,32 @@ class Packet(Structure):
             self.ipv6Head = IPv6(self.data[14:54])
             self.updateMe(self.ipv6Head)
             if self.ipv6Head.protocol == "TCP":
-                self.tcpHead = TCP(self.data[54:74])
+                self.tcpHead = TCP(self.data[34:54])
                 self.updateMe(self.tcpHead)
-                if self.tcpHead.srcPort == 80 | self.tcpHead.dstPort == 80:
-                    self.httpHead = Http(self.data[54:])
+                self.tcpOptionLen = self.tcpHead.len - 20
+                if self.tcpOptionLen != 0:
+                    self.tcpOption = TCPOption(self.data[54 : self.tcpOptionLen])
+                if self.length - 54 - self.tcpOptionLen > 10:
+                    pieceStr = str(
+                        self.data[54 + self.tcpOptionLen : 74 + self.tcpOptionLen]
+                    )
+                    if (
+                        (self.tcpHead.srcPort in httpPort)
+                        or (self.tcpHead.dstPort in httpPort)
+                    ) and (hasString(httpString, pieceStr)):
+                        self.httpHead = Http(self.data[54 + self.tcpOptionLen :])
+                        self.updateMe(self.httpHead)
+                    elif (
+                        (self.tcpHead.srcPort in tlsPort)
+                        or (self.tcpHead.dstPort in tlsPort)
+                    ) and (not hasString(httpString, pieceStr)):
+                        self.tlsHead = TLS(self.data[54 + self.tcpOptionLen :])
+                        self.updateMe(self.tlsHead)
+
             elif self.ipv6Head.protocol == "UDP":
                 self.udpHead = TCP(self.data[54:])
                 self.updateMe(self.udpHead)
+
             elif self.ipv6Head.protocol == "IPv6-ICMP":
                 self.icmpv6Head = ICMPv6(self.data[54:])
                 self.updateMe(self.icmpv6Head)

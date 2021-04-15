@@ -10,3 +10,6 @@
         self.tlsBtn.clicked.connect(MainWindow.detectTLS)
         self.Btnclear.clicked.connect(MainWindow.clearTable)
         self.ListButton.clicked.connect(MainWindow.snip)
+        self.stpButton.clicked.connect(MainWindow.stop)
+        self.CtnButton.clicked.connect(MainWindow.continuous)
+        self.tcpConBtn.clicked.connect(MainWindow.continuousTCP)

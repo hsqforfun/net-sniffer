@@ -2,11 +2,6 @@ import socket
 import struct
 from ctypes import *
 
-# ("ihl", c_ubyte, 4),  # 4bit
-# ("ttl", c_ubyte),  # 8bit
-# ("sum", c_ushort),  # 16bit
-# ("src", c_uint),  # 32bit
-
 CWR = 0x80
 ECNEcho = 0x40
 Urgent = 0x20
@@ -47,6 +42,7 @@ class TCP(Structure):  # 20 bytes
         self.len = int((self.lenres & 0xF0) / 4)
         self.seq = socket.ntohl(self.seq)
         self.ack = socket.ntohl(self.ack)
+        self.win_size = socket.ntohs(self.win_size)
 
         if self.flags & CWR:
             self.flagInfo += "CWR "

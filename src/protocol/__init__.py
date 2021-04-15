@@ -12,6 +12,7 @@ from .ipv6_class import IPv6
 from .udp_class import UDP
 from .icmpv6_class import ICMPv6
 from .tls_class import TLS
+from .tracing import Tracing
 
 __all__ = [
     "VoidHeader",
@@ -27,4 +28,5 @@ __all__ = [
     "UDP",
     "ICMPv6",
     "TLS",
+    "Tracing",
 ]
