@@ -3,7 +3,7 @@ import time
 import netifaces
 import os
 
-from Ui_qtLearn import Ui_MainWindow
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QTextCursor, QCursor
@@ -12,8 +12,9 @@ from sniffer import MySniffer
 
 # path1 = os.path.abspath("./src")
 # sys.path.append(path1)
-sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "./"))
 from protocol import *
+from PyQt import *
 
 
 CWR = 0x80

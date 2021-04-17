@@ -1,5 +1,6 @@
-from Ui_qtLearn import Ui_MainWindow
-from sniffer import Sniffers
+from .Ui_qtLearn import Ui_MainWindow
 
 import sys
 import os
+
+__all__ = ["Ui_MainWindow"]
