@@ -66,14 +66,14 @@ class ARP(Structure):  #  28 bytes
             time.sleep(5)
 
         try:
-            self.higherprotocol = self.protocol_map[self.protocol_num]
+            self.next = self.protocol_map[self.protocol_num]
             self.errorFlag = False
-            self.detailInfo += "higher protocol:%s\n" % self.higherprotocol
+            self.detailInfo += "Higher protocol:%s\n" % self.next
             self.errorInfo = ""
         except:
-            self.higherprotocol = "NOT SUPPORT"
+            self.next = "NOT SUPPORT"
             self.errorFlag = True
-            self.errorInfo = "protocol :%s Not Support" % str(self.protocol_num)
+            self.errorInfo = "Higher protocol :%s Not Support" % str(self.protocol_num)
             self.detailInfo = self.errorInfo
             time.sleep(1)
 

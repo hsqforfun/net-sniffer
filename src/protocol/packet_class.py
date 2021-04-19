@@ -2,9 +2,6 @@ import socket
 import struct
 from ctypes import *
 import time
-import sys
-
-sys.path.append
 
 from .tcp_class import TCP, TCPOption
 from .ip_class import IP
@@ -12,8 +9,6 @@ from .ethernet_class import EthernetII
 from .arp_class import ARP
 from .frame_class import Frame
 from .void_class import VoidHeader
-
-# from .packet_class import Packet
 from .http_class import Http
 from .ipv6_class import IPv6
 from .udp_class import UDP

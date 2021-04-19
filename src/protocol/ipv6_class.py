@@ -96,14 +96,14 @@ class IPv6(Structure):  # 40 bytes
             89: "OSPF",
         }
         try:
-            self.nxt = protocol_map[self.NextHeader]
+            self.next = protocol_map[self.NextHeader]
         except:
-            self.nxt = self.NextHeader
+            self.next = self.NextHeader
 
-        self.detailInfo = "IPv6:\nsrc:%s\ndst:%s\nNext Header:%s\n\n" % (
+        self.detailInfo = "IPv6:\nsrc:%s\ndst:%s\nNext Protocol:%s\n\n" % (
             self.src,
             self.dst,
-            self.nxt,
+            self.next,
         )
 
         # self.info = "Port: %s -> %s Len=%s" % (

@@ -38,29 +38,19 @@ PACKET_MR_PROMISC = 1
 ETH_P_ALL = 3
 ETH_P_IP = 0x800
 
-# nicName = netifaces.gateways()["default"][netifaces.AF_INET][1]
-# mr_ifindex = socket.if_nametoindex(nicName)  # c_type is int
-
 
 def get_something():
-    routingGateway = netifaces.gateways()["default"][netifaces.AF_INET][0]
-    routingNicName = netifaces.gateways()["default"][netifaces.AF_INET][1]
+    NicName = netifaces.gateways()["default"][netifaces.AF_INET][1]
     for interface in netifaces.interfaces():
-        if interface == routingNicName:
-            routingNicMacAddr = netifaces.ifaddresses(interface)[netifaces.AF_LINK][0][
-                "addr"
-            ]
+        if interface == NicName:
             try:
                 routingIPAddr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0][
                     "addr"
                 ]
-                routingIPNetmask = netifaces.ifaddresses(interface)[netifaces.AF_INET][
-                    0
-                ]["netmask"]
             except KeyError:
-                pass
-    mr_ifindex = socket.if_nametoindex(routingNicName)
-    return routingIPAddr, routingNicName, mr_ifindex
+                print("Error happened!")
+    mr_ifindex = socket.if_nametoindex(NicName)
+    return routingIPAddr, NicName, mr_ifindex
 
 
 class MySniffer:
@@ -90,9 +80,6 @@ class MySniffer:
         self.snifferSocket.setsockopt(
             SOL_PACKET, PACKET_ADD_MEMBERSHIP, self.packet_mreq
         )
-
-        # if os.name == "nt":
-        #     snifferSocket.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
 
     def sniffing(self):
         try:

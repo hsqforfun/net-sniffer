@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import os
 import netifaces
 
@@ -7,5 +7,4 @@ NICList = [i for i in netifaces.interfaces() if i != "lo"]
 
 for i in NICList:
     os.system("sudo ifconfig " + i + " promisc")
-
 os.system("sudo python ./src/top.py")
