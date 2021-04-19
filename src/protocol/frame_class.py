@@ -3,6 +3,6 @@ class Frame:
         self.length = data_len
         self.nicName = address[0]  # nic name
         self.detailInfo = "Frame:\n%s captured by Interface:%s\n\n" % (
+            self.length,
             self.nicName,
-            self.Interface,
         )

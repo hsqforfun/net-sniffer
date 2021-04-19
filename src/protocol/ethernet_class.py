@@ -50,9 +50,9 @@ class EthernetII(Structure):  # 14 bytes
             self.dst = self.dst[:-1]
 
         try:
-            self.protocol = protocol_map[protocol_hex]
+            self.protocol = self.protocol_map[protocol_hex]
         except:
-            self.protocol = protocol_map[0x9999]
+            self.protocol = self.protocol_map[0x9999]
             self.info = "Unknown protocol type is: 0x%x" % protocol_hex
 
         self.detailInfo = "Ethernet-II:\ndst mac:%s\nsrc mac:%s\nprotocol:%s\n\n" % (

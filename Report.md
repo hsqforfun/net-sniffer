@@ -14,7 +14,7 @@ github：https://github.com/hsqforfun/net-sniffer.git
 
 
 
-# 1.实验简介
+# 1. 实验简介
 
 ## 1.1 实验背景
 
@@ -28,7 +28,7 @@ github：https://github.com/hsqforfun/net-sniffer.git
 
 
 
-# 2.设计细节
+# 2. 设计细节
 
 ## 2.1 设计思想概要
 
@@ -200,11 +200,57 @@ _fields_ = [
 
 ​	所有嗅探到的包放置在Packet List区域。下方的Packet Detail区、Packet Binary区和ASCII区都是展示最近的一个包的信息。当想要查看之前包的信息时，单击Packet List区域中，报文的No按键，即可触发编写的函数，达到在下方的区域显示该信息的效果。
 
-# 3.程序运行
+# 3. 程序运行
 
 ## 3.1 运行前提
 
 本实验中在linux的python3环境下运行，用到了socket、netifaces、pyqt5和ctypes库，可能需要通过pip install的方式进行安装。安装完成后，执行src目录下的runMe.py。由于需要将网卡设置为混杂模式，以及后续socket的调用，因此需要以sudo的方式运行。
 
 ## 3.2 运行结果
+
+​	在项目目录net-sniffer下运行./runMe.py，即可运行网络嗅探器程序，如下图所示：
+
+![](./pic/UI/cmd.png)
+
+​	若没有报错成功运行，则会跳出前文讲述的UI界面。
+
+### 3.2.1 全局嗅探
+
+![](./pic/UI/ex1.png)
+
+​	当单击sniffer时，会进行一次嗅探操作。当单击Continuous时，会以默认时间间隔（0.5s）为单位进行，用户可以在想要停止时单击stop来实现。
+
+​	当用户在Packet List中没有得到有效信息时，可以单击Clear来清空，下方的Packet Detail和Packet Binary区也会随之清空。注意，No区显示两个数字，左边的是PyQt5对于QTableWidget的默认编号，可以认为是行号；右边的数字是我编写的一个Button按键，上面的编号是第N个嗅探到的包，这个数字不随着用户单击Clear而归零。同时，当用户想查看这个包信息时，可以单击这个No列的Button来实现在下方区域展示此报文信息。
+
+![](./pic/UI/ex2.png)
+
+​	如上图所示，当目前最新嗅探到30号的TCP协议包时，单击29号的Button，可以发现，下方的Packet Detail和Packet Binary区展示的信息变为了29号UDP包的信息。
+
+### 3.2.2 协议嗅探
+
+当用户需要特定捕捉TCP、HTTP或TLS协议时，可以单击第二行的协议Button来实现对某种协议的嗅探。
+
+![](./pic/UI/ex3.png)
+
+​	当点击TCP时，嗅探到的包都是建立在TCP报头及其之上的，如TLS协议，如上图所示。同理，TLS和HTTP按键也是如此，以下图HTTP为例：
+
+![](./pic/UI/ex4.png)
+
+​	最后的TCP Continuous的按键，可以实现一次实现对默认数量（200）的TCP包连续嗅探，可为后续完整的TCP追踪做铺垫。
+
+### 3.2.3 TCP追踪
+
+​	当用户尝试实现TCP追踪时，单击protocol出的button即可。注意，只有建立在TCP报头基础上的报文，才会在protocol处生成button，否则只是以文本方式展示。
+
+​	当我们点击TCP Continuous嗅探许多TCP报时，单击其中一条的protocol处的button，如下所示：
+
+![](./pic/UI/ex5.png)
+
+​	可以观察到，经过筛选后的数据报，全部由localhost的50002端口和112.34.112.78的443端口进行通信。目前嗅探到的是包含了三次握手的信息，即从[SYN]到[ACK SYN]再到[ACK]的过程。列表的TracingInfo中的Seq和Ack值也可以输出为相对值，而不是包中的绝对值。如果选择的信号没有完整的三次握手，则不会输出。这是目前的局限性。
+
+
+
+# 4. 总结
+
+​	本次实验在python3的环境下，结合了一些工具库，实现了网络嗅探器的功能。这次实验让我对编写代码、计算机网络知识、git项目管理等各个方面都有了更深的认识。目前的网络嗅探器能够达到实验要求的基本功能，但还能够有更进一步优化的空间。在课余时间将代码进一步丰富完善也是软件与系统安全课程的进一步的补充学习，收货良多。
 
