@@ -36,6 +36,7 @@ class Tracing:
         self.serverBye = 0
         self.clientIP = None
         self.serverIP = None
+        self.finishFlag = False
 
     def shake1(self):
         for (Num, pkt) in self.dict.items():
@@ -76,7 +77,7 @@ class Tracing:
     def bye1(self):
         flg = False
         for (Num, pkt) in self.dict.items():
-            if (pkt.tcpHead.flags & FIN) and pkt.src == clientIP:
+            if (pkt.tcpHead.flags & FIN) and pkt.src == self.clientIP:
                 self.clientBye = pkt.tcpHead.seq
                 self.bye2()
                 flg = True
@@ -88,7 +89,7 @@ class Tracing:
         for (Num, pkt) in self.dict.items():
             if (
                 pkt.tcpHead.flags & ACK
-                and pkt.src == serverIP
+                and pkt.src == self.serverIP
                 and pkt.tcpHead.ack == (self.clientBye + 1)
             ):
                 flg = True
@@ -101,7 +102,7 @@ class Tracing:
         for (Num, pkt) in self.dict.items():
             if (
                 pkt.tcpHead.flags == (FIN | ACK)
-                and pkt.src == serverIP
+                and pkt.src == self.serverIP
                 and pkt.tcpHead.ack == (self.clientBye + 1)
             ):
                 self.serverBye = pkt.tcpHead.seq
@@ -116,7 +117,7 @@ class Tracing:
         for (Num, pkt) in self.dict.items():
             if (
                 pkt.tcpHead.flags == ACK
-                and pkt.src == clientIP
+                and pkt.src == self.clientIP
                 and pkt.tcpHead.seq == (self.clientBye + 1)
                 and pkt.tcpHead.ack == (self.serverBye + 1)
             ):

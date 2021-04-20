@@ -6,6 +6,8 @@
 
 语言：python3.8
 
+操作系统：Linux：Ubuntu 20.04
+
 相关库：pyqt5 neticfaces socket ctypes struct
 
 github：https://github.com/hsqforfun/net-sniffer.git
